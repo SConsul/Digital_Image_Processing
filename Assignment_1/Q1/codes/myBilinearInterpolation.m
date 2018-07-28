@@ -1,4 +1,4 @@
-function output_image = myBilinearInterpolation(input_image)
+function output = myBilinearInterpolation(input)
 %%Image Enlargement using Bilinear Interpolation 
         [height, width] = size(input);
         output = zeros(3*height - 2 , 2*width - 1);
