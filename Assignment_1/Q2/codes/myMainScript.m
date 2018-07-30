@@ -11,8 +11,10 @@ church = imread('../data/church.png');
 
 %Q2(b) Image Enhancement using Independent channel Histogram Equalisation
 HM = imread('../data/HMInputImage.png');
-HM_he = myHE(HM);
+[HM_he,HM_avg,HM_w] = myHE(HM);
 figure(2);
-subplot(2,1,1),imshow(HM);
-subplot(2,1,2),imshow(HM_he);
+subplot(3,1,1),imshow(HM);
+% subplot(4,1,2),imshow(HM_he);
+subplot(3,1,2),imshow(HM_avg);
+subplot(3,1,3),imshow(HM_w);
 toc;
