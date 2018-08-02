@@ -9,5 +9,5 @@ function op=AHE_nlfilter(A)
     hist = histcounts(A,edges);
     cdf = cumsum(hist)/sum(hist);
     center = uint8(floor(size(A,1)*0.5) + 1);
-    op = uint8(cdf(A(center,center)+1)*255);
+    op = cdf(A(center,center))*255;
 end
