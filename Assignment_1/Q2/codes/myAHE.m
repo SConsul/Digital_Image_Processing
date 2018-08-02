@@ -8,7 +8,7 @@ function output = myAHE(input,N)
        for i=1:size(input,1)
            output(i,j) = applyHE(hist,padded(i+offset,j+offset));
            hist_prev = get_hist(padded,i,j+offset,0,offset);
-           hist_next = get_hist(padded,min(i+N,size(input,1)),j+offset,0,offset);
+           hist_next = get_hist(padded,min(i+N,size(padded,1)),j+offset,0,offset);
            hist = hist - hist_prev + hist_next;
        end
    end
