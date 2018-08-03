@@ -39,7 +39,7 @@ end
 function op_value = CDF_inv(cdf,ip)
     ip = double(ip);
     [c, index_1] = min(abs(cdf-ip));
-    index_2 = index_1 +sign(ip-cdf(index_1));
+    index_2 = index_1 +sign(ip-cdfa(index_1));
     if(index_2 < 1)
         index_2 = 1;
     elseif(index_2 > 256)

@@ -1,4 +1,4 @@
-function output = myHE_test(input,arg, varargin)
+function output = myHE(input,arg, varargin)
 %Image Enhancement using Histogram Equalisation (independent channel)
     if(nargin==2) 
         s = size(input);
@@ -43,10 +43,12 @@ function output = myHE_test(input,arg, varargin)
 end
 
     function cdf = CDF_gen(ip)
-        hist= imhist(ip);
+%         hist= imhist(ip);
+        hist = histcounts(ip,linspace(0,256,257));
         cdf = double(cumsum(hist))/double(sum(hist));
     end
 
     function op = CDF(cdf,ip)
-        op = double(255)*cdf(ip+1,1);
+      op = double(255)*cdf(uint8(ip)+1);
+        
     end
