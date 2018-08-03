@@ -1,0 +1,38 @@
+function output = myLinearContrastStretching(input,arg)
+%%Linear contrasting 
+    if(arg == 'g')
+        output = arrayfun(@pwl,input);
+    elseif(arg == 'rgb')
+        outputr = arrayfun(@pwl,input(:,:,1));
+        outputg = arrayfun(@pwl,input(:,:,2));
+        outputb = arrayfun(@pwl,input(:,:,3));
+        output = input;
+        output(:,:,1) = outputr;
+        output(:,:,2) = outputg;
+        output(:,:,3) = outputb;
+    end
+    % x=linspace(0,255,256);
+    % y=arrayfun(@pwl,x);
+    % figure(2);
+    % plot(x,y)  
+    % hold on; 
+    % plot(x,x);
+    % ylim([0,255])
+end
+
+function op_intensity = pwl(in_intensity);
+        x1 = 0;
+        y1 = 150;
+        x2 = 192;
+        y2 = 224;
+        if ((in_intensity >= 0 && in_intensity <= x1))
+            op_intensity = in_intensity*(y1/x1);
+            
+        elseif ((in_intensity>x1 && in_intensity<= x2))
+            op_intensity = y1 + (y2 - y1)*(in_intensity-x1)/(x2-x1);
+            
+        else
+            op_intensity = y2 + (255 - y2)*(in_intensity-x2)/(255-x2);
+        end
+        
+end

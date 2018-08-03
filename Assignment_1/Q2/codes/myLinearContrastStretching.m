@@ -1,48 +1,30 @@
-%function output = myLinearContrastStretching(input)
-%%Linear contrasting 
-input= imread('../data/church.png');
-clc
+function output = myLinearContrastStretching(input,arg)
+%Linear Contrast Stretching
+    output = input;
+    if(arg=='g')
+        minimum =min(min(input));
+        maximum =max(max(input));
+        output = cell2mat(arrayfun(@(z)pwl(minimum,maximum,z),input,'UniformOutput',false));
+    else
+        min_r =min( min(input(:,:,1)));
+        max_r =max( max(input(:,:,1)));
+        output(:,:,1) = cell2mat(arrayfun(@(z)pwl(min_r,max_r,z),input(:,:,1),'UniformOutput',false));
 
-output = input;
-output = arrayfun(@pwl,input);
+        min_g =min( min(input(:,:,2)));
+        max_g = max(max(input(:,:,2)));
+        output(:,:,2) =cell2mat( arrayfun(@(z)pwl(min_g,max_g,z),input(:,:,2),'UniformOutput',false));
 
-outputr = input;
-outputr(:,:,1) = arrayfun(@pwl,input(:,:,1));
-
-outputg = input;
-outputg(:,:,2) = arrayfun(@pwl,input(:,:,2));
-
-outputb = input;
-outputb(:,:,3) = arrayfun(@pwl,input(:,:,3));
-
-figure(1);
-subplot(2,2,1),imshow(output)
-subplot(2,2,2),imshow(outputr)
-subplot(2,2,3),imshow(outputg)
-subplot(2,2,4),imshow(outputb)
-
-x=linspace(0,255,256);
-y=arrayfun(@pwl,x);
-figure(2);
-plot(x,y)  
-hold on; 
-plot(x,x);
-ylim([0,255])
-%end
-
-function op_intensity = pwl(in_intensity);
-        x1 = 64;
-        y1 = 150;
-        x2 = 192;
-        y2 = 224;
-        if ((in_intensity >= 0 && in_intensity <= x1))
-            op_intensity = in_intensity*(y1/x1);
-            
-        elseif ((in_intensity>x1 && in_intensity<= x2))
-            op_intensity = y1 + (y2 - y1)*(in_intensity-x1)/(x2-x1);
-            
-        else
-            op_intensity = y2 + (255 - y2)*(in_intensity-x2)/(255-x2);
-        end
+        min_b =min( min(input(:,:,3)));
+        max_b = max(max(input(:,:,3)));
+        output(:,:,3) = cell2mat(arrayfun(@(z)pwl(min_b,max_b,z),input(:,:,3),'UniformOutput',false));
+    end
+end
+function op_intensity = pwl(min,max,in_intensity)
+        in_intensity = double(in_intensity);
+        x1 = double(min);
+        y1 = 0;
+        x2 = double(max);
+        y2 = 255;
         
+        op_intensity = (in_intensity-x1)*((y2 - y1)./(x2 - x1)); 
 end
