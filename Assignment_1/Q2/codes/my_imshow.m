@@ -3,6 +3,7 @@ function my_imshow(input,name)
     colorScale = [[0:1/(numberColours-1):1]',[0:1/(numberColours-1):1]',[0:1/(numberColours-1):1]'];
     figure('Name',name,'NumberTitle','off');
     imagesc(input);
+    title(name);
     truesize;
     colormap(colorScale);
 %    colormap jet
