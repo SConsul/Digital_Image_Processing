@@ -1,22 +1,25 @@
 function [op]=myCLAHE2(inp,N,thresh)
 %% Using nlfilter function
+    inp = int16(inp) + int16(ones(size(inp)));
+    inpt = inp';
     f = @(x) CLAHE2_nlfilter(x,thresh);
-    op = nlfilter(inp,[N N], f);
+    op = nlfilter(inpt,[N N], f);
 end
 
 function op=CLAHE2_nlfilter(A,thresh)
-    edges = linspace(1,256,256);
+    edges = 0:1:256;
+    center = (floor(size(A,1)/2) + 1);
+    A = A - int16(ones(size(A)));
     hist = histcounts(A,edges);
     hist = hist/sum(hist);
     hist = clip(hist, thresh);
-    cdf = cumsum(hist)/sum(hist);
-    center = uint8(floor(size(A,1)*0.5) + 1);
-    op = (cdf(A(center,center))*255);
+    cdf = cumsum(hist);
+    op = cdf(A(center,center)+1)*255;
 end
 
 function clipped_hist = clip(hist, thresh)
     over = hist > thresh;
-    excess = sum(hist(over)) - sum(over)*thresh;
+    excess = sum(hist(over)-thresh);
     hist(over) = thresh;
-    clipped_hist = hist + (excess/size(hist,1));
+    clipped_hist = hist + (excess/size(hist,2));
 end
