@@ -48,5 +48,5 @@ function clipped_hist = clip(hist, thresh)
     over = hist > thresh;
     excess = sum(hist(over)) - sum(over)*thresh;
     hist(over) = thresh;
-    clipped_hist = hist + (excess/size(hist,1));
+    clipped_hist = hist + (excess/size(hist,2));
 end
