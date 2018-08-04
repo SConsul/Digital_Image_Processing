@@ -2,26 +2,24 @@
 
 tic;
 %% Your code here
-%Q1(a) Image Shrinking
+% reading input images
+barbara = imread('../data/barbaraSmall.png');
 concentricC_in=imread('../data/circles_concentric.png');
+
+%Q1(a) Image Shrinking
 shrunk2_cc = myShrinkImageByFactorD(concentricC_in,2);
 shrunk3_cc = myShrinkImageByFactorD(concentricC_in,3);
-% subplot(1,3,1),imshow(concentricC_in);
-% subplot(1,3,2),imshow(shrunk2_cc);
-% subplot(1,3,3),imshow(shrunk3_cc);
-% size(concentricC_in)
-% size(shrunk2_cc)
-% size(shrunk3_cc)
+my_imshow(concentricC_in, 'Original Concentric Circles');
+my_imshow(shrunk2_cc, 'Concentric Circles shrunk by a factor of 2');
+my_imshow(shrunk3_cc, 'Concentric Circles shrunk by a factor of 3');
 
 %Q1(b) Image Enlargement using Bilinear Interpolation
-barbara_in = imread('../data/barbaraSmall.png');
-% imshow(barbara_in);
-op = myBilinearInterpolation(barbara_in);
-imshow(mat2gray(op))
+my_imshow(barbara, 'Original Barbara');
+op = myBilinearInterpolation(barbara);
+my_imshow(op, 'Bilinearly Interpolated Barbara')
 
 %Q1(c) Image Enlargement using Nearest Neighbor Interpolation
-barbara_in = imread('../data/barbaraSmall.png');
-% imshow(barbara_in);
-op = myNearestNeighborInterpolation(barbara_in);
-imshow(mat2gray(op))
+my_imshow(barbara, 'Original Barbara');
+op = myNearestNeighborInterpolation(barbara);
+my_imshow(op, 'Nearest Neighbour-Interpolated Barbara')
 toc;
