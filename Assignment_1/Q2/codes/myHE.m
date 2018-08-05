@@ -1,5 +1,5 @@
 function output = myHE(input,arg, varargin)
-%Image Enhancement using Histogram Equalisation (independent channel)
+% Image Enhancement using Histogram Equalisation (independent channel)
     if(nargin==2) 
         s = size(input);
         mask = true(s(1), s(2));
@@ -7,7 +7,7 @@ function output = myHE(input,arg, varargin)
         mask = cell2mat(varargin(1,1));
     end
     
-    output = input;
+    output = zeros(size(input));
     
     if(arg=='g')
         cdf = CDF_gen(input(mask));
@@ -38,17 +38,19 @@ function output = myHE(input,arg, varargin)
           output(:,:,1) = r_he.*mask;
           output(:,:,2) = g_he.*mask;
           output(:,:,3) = b_he.*mask;
+%           output = cat(3, r_he.*mask, g_he.*mask, b_he.*mask);
     end
        
 end
 
     function cdf = CDF_gen(ip)
 %         hist= imhist(ip);
-        hist = histcounts(ip,linspace(0,256,257));
-        cdf = double(cumsum(hist))/double(sum(hist));
+        hist = histcounts(ip,linspace(0,256,257),'Normalization','probability');
+%         cdf = double(cumsum(hist))/double(sum(hist));
+        cdf = cumsum(hist);
     end
 
     function op = CDF(cdf,ip)
-      op = double(255)*cdf(uint8(ip)+1);
+      op = double(255*cdf(floor(ip)+1));
         
     end

@@ -1,3 +1,4 @@
+
 function output = myCLAHE(input,N,thresh)
     offset = floor(N/2);
     padded = padarray(int16(input),[offset offset 0], -1);

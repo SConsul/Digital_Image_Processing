@@ -10,4 +10,6 @@ function my_imshow(input,name)
     daspect([1,1,1]);
     axis tight;
     colorbar
+%     dest = cat(2,name,'.jpg')
+%     imwrite(input,colormap(colorScale),dest,'jpg');
     
