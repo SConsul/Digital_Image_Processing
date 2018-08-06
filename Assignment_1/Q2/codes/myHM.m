@@ -1,12 +1,7 @@
-% input = imread('../data/retina.png');
-%  ref = imread('../data/retinaRef.png');
-%  input_mask = imread('../data/retinaMask.png');
-%  ref_mask = imread('../data/retinaRefMask.png');
-
 function [op_intermediate,output] = myHM(input,input_mask,ref,ref_mask)
 
     op_intermediate = myHE(input,'ind',input_mask)/255;
-    my_imshow(op_intermediate, 'int');
+%     my_imshow(op_intermediate, 'int');
     output =zeros(size(input));
     
     ref_r = ref(:,:,1);
@@ -27,7 +22,6 @@ function [op_intermediate,output] = myHM(input,input_mask,ref,ref_mask)
     output(:,:,3) = b_hm.*ref_mask;
     output = output/255;
 end
-% my_imshow(output, 'pls work');
 
 function cdf = CDF_gen(ip)
     hist= imhist(ip);
@@ -44,7 +38,6 @@ function op_value = CDF_inv(cdf,ip)
     elseif(index_2 > 256)
         index_2 = 256;
     end
-%     op_value = ((cdf(index_1)*double(index_2) + cdf(index_2)*double(index_1) )/(cdf(index_1)+ cdf(index_2)) -1)/255;
     y2 = cdf(index_2);
     y1 = cdf(index_1);
     if(index_2~=index_1)
