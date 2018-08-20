@@ -1,0 +1,338 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>MyMainScript</title><meta name="generator" content="MATLAB 9.2"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-08-20"><meta name="DC.source" content="myMainScript.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>MyMainScript</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Image 1: Barbara</a></li><li><a href="#2">Corrupting image with noise</a></li><li><a href="#3">Optimal parameter values:</a></li><li><a href="#4">Note:</a></li><li><a href="#5">Image 2: Grass Noisy</a></li><li><a href="#6">Patch-based filtering with optimal parameters</a></li><li><a href="#7">Optimal parameter values:</a></li><li><a href="#8">Note:</a></li><li><a href="#9">Patch-based filtering with sub-optimal parameters</a></li><li><a href="#10">0.9 SD</a></li><li><a href="#11">1.1 SD</a></li><li><a href="#12">Corrupting image with noise</a></li><li><a href="#13">Patch-based filtering with optimal parameters</a></li><li><a href="#14">Optimal parameter values:</a></li><li><a href="#15">Note:</a></li><li><a href="#16">Patch-based filtering with sub-optimal parameters</a></li><li><a href="#17">0.9 SD</a></li><li><a href="#18">1.1 SD</a></li></ul></div><h2 id="1">Image 1: Barbara</h2><pre class="codeinput"><span class="comment">% Reading inputB</span>
+inputB = load(<span class="string">'../data/barbara.mat'</span>);
+inputB = double(inputB.imageOrig);
+</pre><h2 id="2">Corrupting image with noise</h2><pre class="codeinput">[xb,yb] = size(inputB);
+sd_b = 0.05*(max(max(inputB)) - min(min(inputB)));
+corrupted_B = inputB + sd_b*randn(xb,yb);
+corrupted_B_shrunk = corrupted_B(1:2:end,1:2:end);
+inputB_s = inputB(1:2:end, 1:2:end);
+<span class="comment">% Patch-based filtering with optimal parameters</span>
+tic;
+h_b = 1.25;
+filtered_B = myPatchBasedFiltering(corrupted_B_shrunk,9,25,1.5,h_b);
+RMSD_b = sqrt(sum(sum((filtered_B-inputB_s).^2))/(xb*yb));
+my_imshow(inputB_s, <span class="string">'input image'</span>, corrupted_B_shrunk, <span class="string">'Corrupted image'</span>, filtered_B, <span class="string">'Filtered image optimum'</span>);
+toc;
+</pre><h2 id="3">Optimal parameter values:</h2><p>The optimal value of the standard deviation (SD) is 1.25</p><pre class="codeinput">fprintf(<span class="string">'The correspoding RMSD is %2.3f.\n'</span>, RMSD_b);
+
+<span class="comment">% Note:</span>
+<span class="comment">% The mask has been scaled to the range [0, 255] for the purpose of display.</span>
+
+mask = fspecial(<span class="string">'gaussian'</span>, 9, 1.5);
+my_imshow(mask, <span class="string">'Mask to make patches isotropic'</span>)
+<span class="comment">% Patch-based filtering with sub-optimal parameters</span>
+
+<span class="comment">% 0.9 SD</span>
+tic;
+filtered_b_9 = myPatchBasedFiltering(corrupted_B_shrunk,9,25,1.5,h_b*0.9);
+RMSD_b9 = sqrt(sum(sum((filtered_b_9-inputB_s).^2))/(xb*yb));
+my_imshow(inputB_s, <span class="string">'inputB image'</span>, corrupted_B_shrunk, <span class="string">'Corrupted image'</span>, filtered_b_9, <span class="string">'Filtered image 0.9'</span>);
+fprintf(<span class="string">'The correspoding RMSD is %2.3f.\n'</span>, RMSD_b9);
+toc;
+<span class="comment">% 1.1 SD</span>
+filtered_b_11 = myPatchBasedFiltering(corrupted_B_shrunk,9,25,1.5,h_b*1.1);
+RMSD_b11 = sqrt(sum(sum((filtered_b_11-inputB_s).^2))/(xb*yb));
+my_imshow(inputB_s, <span class="string">'inputB image'</span>, corrupted_B_shrunk, <span class="string">'Corrupted image'</span>, filtered_b_11, <span class="string">'Filtered image 1.1'</span>);
+fprintf(<span class="string">'The correspoding RMSD is %2.3f.\n'</span>, RMSD_b11);
+</pre><h2 id="4">Note:</h2><p>Undersampling, by spatio-gaussian sampling, has not been done Instead, a spatio-Gaussian thresholding has been done to ensure patches far from the the pixel of interest have less contribution, and patches are isotropic</p><pre class="codeinput"><span class="comment">% Using random patch selection</span>
+<span class="comment">% Undersample the image using spatial gaussian distribution. Poorer RSMD</span>
+<span class="comment">% but large drop in execution time</span>
+outputRANDOM = myRandomPatchBasedFilter(corrupted_B,9,25,1.5,h_b,100);
+[x,y] = size(corrupted_B);
+RMSD_b_ran = sqrt(sum(sum((outputRANDOM-inputB).^2))/(x*y));
+my_imshow(inputB, <span class="string">'inputB image'</span>, corrupted_B, <span class="string">'Corrupted image'</span>, outputRANDOM, <span class="string">'Filtered image random'</span>);
+fprintf(<span class="string">'The correspoding RMSD is %2.3f.\n'</span>, RMSD_b_ran);
+</pre><pre class="codeoutput">Elapsed time is 47.448702 seconds.
+The correspoding RMSD is 1.742.
+The correspoding RMSD is 1.630.
+Elapsed time is 43.878844 seconds.
+The correspoding RMSD is 1.873.
+The correspoding RMSD is 3.373.
+</pre><img vspace="5" hspace="5" src="myMainScript_01.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_02.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_03.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_04.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_05.png" alt=""> <h2 id="5">Image 2: Grass Noisy</h2><pre class="codeinput"><span class="comment">% Reading inputB</span>
+inputG = im2double(imread(<span class="string">'../data/grass.png'</span>));
+
+<span class="comment">% Corrupting image with noise</span>
+[xg,yg] = size(inputG);
+sd_g = 0.05*(max(max(inputG)) - min(min(inputG)));
+corrupted_G = inputG + sd_g*randn(xg,yg);
+corrupted_G = corrupted_G(1:2:end,1:2:end);
+inputG = inputG(1:2:end,1:2:end);
+</pre><h2 id="6">Patch-based filtering with optimal parameters</h2><pre class="codeinput">tic;
+h_g = 0.17625;
+filtered_G = myPatchBasedFiltering(corrupted_G,9,25,9,h_g);
+RMSDg = sqrt(sum(sum((filtered_G-inputG).^2))/(xg*yg));
+my_imshow(inputG, <span class="string">'input image'</span>, corrupted_G, <span class="string">'Corrupted image'</span>, filtered_G, <span class="string">'Filtered image optimum'</span>);
+toc;
+</pre><h2 id="7">Optimal parameter values:</h2><p>The optimal value of the standard deviation (SD) is h</p><pre class="codeinput">fprintf(<span class="string">'The correspoding RMSD is %2.3f.\n'</span>, RMSDg);
+</pre><pre class="codeoutput">Elapsed time is 3.271908 seconds.
+The correspoding RMSD is 0.062.
+</pre><img vspace="5" hspace="5" src="myMainScript_06.png" alt=""> <h2 id="8">Note:</h2><p>The mask has been scaled to the range [0, 255] for the purpose of display.</p><pre class="codeinput">mask = fspecial(<span class="string">'gaussian'</span>, 9, 1.5);
+my_imshow(mask, <span class="string">'Mask to make patches isotropic'</span>)
+</pre><img vspace="5" hspace="5" src="myMainScript_07.png" alt=""> <h2 id="9">Patch-based filtering with sub-optimal parameters</h2><h2 id="10">0.9 SD</h2><pre class="codeinput">tic;
+filtered_g_9 = myPatchBasedFiltering(corrupted_G,9,25,9,h_g*0.9);
+RMSD_g9 = sqrt(sum(sum((filtered_g_9-inputG).^2))/(xg*yg));
+my_imshow(inputG, <span class="string">'input image'</span>, corrupted_G, <span class="string">'Corrupted image'</span>, filtered_g_9, <span class="string">'Filtered image 0.9'</span>);
+fprintf(<span class="string">'The correspoding RMSD is %2.3f.\n'</span>, RMSD_g9);
+toc;
+</pre><pre class="codeoutput">The correspoding RMSD is 0.062.
+Elapsed time is 3.364857 seconds.
+</pre><img vspace="5" hspace="5" src="myMainScript_08.png" alt=""> <h2 id="11">1.1 SD</h2><pre class="codeinput">filtered_g_11 = myPatchBasedFiltering(corrupted_G,9,25,9,h_g*1.1);
+RMSD_g11 = sqrt(sum(sum((filtered_g_11-inputG).^2))/(xg*yg));
+my_imshow(inputG, <span class="string">'input image'</span>, corrupted_G, <span class="string">'Corrupted image'</span>, filtered_g_11, <span class="string">'Filtered image 1.1'</span>);
+fprintf(<span class="string">'The correspoding RMSD is %2.3f.\n'</span>, RMSD_g11);
+
+
+<span class="comment">% Image 3: Honey Comb</span>
+
+<span class="comment">%%Reading input</span>
+inputH = im2double(imread(<span class="string">'../data/honeyCombReal.png'</span>));
+</pre><pre class="codeoutput">The correspoding RMSD is 0.062.
+</pre><img vspace="5" hspace="5" src="myMainScript_09.png" alt=""> <h2 id="12">Corrupting image with noise</h2><pre class="codeinput">[xh,yh] = size(inputH);
+sd_h = 0.05*(max(max(inputH)) - min(min(inputH)));
+corrupted_H = inputH + sd_g*randn(xh,yh);
+corrupted_H = corrupted_H(1:2:end,1:2:end);
+inputH = inputH(1:2:end,1:2:end);
+</pre><h2 id="13">Patch-based filtering with optimal parameters</h2><pre class="codeinput">tic;
+h_h = 1.25;
+filtered_H = myPatchBasedFiltering(corrupted_H,9,25,1.5,h_h);
+RMSD_h = sqrt(sum(sum((filtered_H-inputH).^2))/(xh*yh));
+my_imshow(inputH, <span class="string">'input image'</span>, corrupted_H, <span class="string">'Corrupted image'</span>, filtered_H, <span class="string">'Filtered image optimum'</span>);
+toc;
+</pre><h2 id="14">Optimal parameter values:</h2><p>The optimal value of the standard deviation (SD) is h</p><pre class="codeinput">fprintf(<span class="string">'The correspoding RMSD is %2.3f.\n'</span>, RMSD_h);
+</pre><pre class="codeoutput">Elapsed time is 11.307371 seconds.
+The correspoding RMSD is 0.063.
+</pre><img vspace="5" hspace="5" src="myMainScript_10.png" alt=""> <h2 id="15">Note:</h2><p>The mask has been scaled to the range [0, 255] for the purpose of display.</p><pre class="codeinput">mask = fspecial(<span class="string">'gaussian'</span>, 9, 1.5);
+my_imshow(mask, <span class="string">'Mask to make patches isotropic'</span>)
+</pre><img vspace="5" hspace="5" src="myMainScript_11.png" alt=""> <h2 id="16">Patch-based filtering with sub-optimal parameters</h2><h2 id="17">0.9 SD</h2><pre class="codeinput">tic;
+filtered_H_9 = myPatchBasedFiltering(corrupted_H,9,25,1.5,h_h*0.9);
+RMSD_h9 = sqrt(sum(sum((filtered_H_9-inputH).^2))/(xh*yh));
+my_imshow(inputH, <span class="string">'input image'</span>, corrupted_H, <span class="string">'Corrupted image'</span>, filtered_H_9, <span class="string">'Filtered image 0.9'</span>);
+fprintf(<span class="string">'The correspoding RMSD is %2.3f.\n'</span>, RMSD_h9);
+toc;
+</pre><pre class="codeoutput">The correspoding RMSD is 0.063.
+Elapsed time is 11.065694 seconds.
+</pre><img vspace="5" hspace="5" src="myMainScript_12.png" alt=""> <h2 id="18">1.1 SD</h2><pre class="codeinput">filtered_h_11 = myPatchBasedFiltering(corrupted_H,9,25,1.5,h_h*1.1);
+RMSD_h11 = sqrt(sum(sum((filtered_h_11-inputH).^2))/(xh*yh));
+my_imshow(inputH, <span class="string">'input image'</span>, corrupted_H, <span class="string">'Corrupted image'</span>, filtered_h_11, <span class="string">'Filtered image 1.1'</span>);
+fprintf(<span class="string">'The correspoding RMSD is %2.3f.\n'</span>, RMSD_h11);
+</pre><pre class="codeoutput">The correspoding RMSD is 0.063.
+</pre><img vspace="5" hspace="5" src="myMainScript_13.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% MyMainScript
+
+%% Image 1: Barbara
+
+% Reading inputB
+inputB = load('../data/barbara.mat');
+inputB = double(inputB.imageOrig);
+
+%% Corrupting image with noise
+[xb,yb] = size(inputB);
+sd_b = 0.05*(max(max(inputB)) - min(min(inputB)));
+corrupted_B = inputB + sd_b*randn(xb,yb);
+corrupted_B_shrunk = corrupted_B(1:2:end,1:2:end);
+inputB_s = inputB(1:2:end, 1:2:end);
+% Patch-based filtering with optimal parameters
+tic;
+h_b = 1.25;
+filtered_B = myPatchBasedFiltering(corrupted_B_shrunk,9,25,1.5,h_b);
+RMSD_b = sqrt(sum(sum((filtered_B-inputB_s).^2))/(xb*yb));
+my_imshow(inputB_s, 'input image', corrupted_B_shrunk, 'Corrupted image', filtered_B, 'Filtered image optimum');
+toc;
+%%% Optimal parameter values:
+% The optimal value of the standard deviation (SD) is 1.25
+fprintf('The correspoding RMSD is %2.3f.\n', RMSD_b);
+
+% Note:
+% The mask has been scaled to the range [0, 255] for the purpose of display.
+
+mask = fspecial('gaussian', 9, 1.5);
+my_imshow(mask, 'Mask to make patches isotropic')
+% Patch-based filtering with sub-optimal parameters
+
+% 0.9 SD
+tic;
+filtered_b_9 = myPatchBasedFiltering(corrupted_B_shrunk,9,25,1.5,h_b*0.9);
+RMSD_b9 = sqrt(sum(sum((filtered_b_9-inputB_s).^2))/(xb*yb));
+my_imshow(inputB_s, 'inputB image', corrupted_B_shrunk, 'Corrupted image', filtered_b_9, 'Filtered image 0.9');
+fprintf('The correspoding RMSD is %2.3f.\n', RMSD_b9);
+toc;
+% 1.1 SD
+filtered_b_11 = myPatchBasedFiltering(corrupted_B_shrunk,9,25,1.5,h_b*1.1);
+RMSD_b11 = sqrt(sum(sum((filtered_b_11-inputB_s).^2))/(xb*yb));
+my_imshow(inputB_s, 'inputB image', corrupted_B_shrunk, 'Corrupted image', filtered_b_11, 'Filtered image 1.1');
+fprintf('The correspoding RMSD is %2.3f.\n', RMSD_b11);
+
+
+%%% Note: 
+% Undersampling, by spatio-gaussian sampling, has not been done
+% Instead, a spatio-Gaussian thresholding has been done to ensure patches
+% far from the the pixel of interest have less contribution, and patches 
+% are isotropic
+
+% Using random patch selection
+% Undersample the image using spatial gaussian distribution. Poorer RSMD
+% but large drop in execution time
+outputRANDOM = myRandomPatchBasedFilter(corrupted_B,9,25,1.5,h_b,100);
+[x,y] = size(corrupted_B);
+RMSD_b_ran = sqrt(sum(sum((outputRANDOM-inputB).^2))/(x*y));
+my_imshow(inputB, 'inputB image', corrupted_B, 'Corrupted image', outputRANDOM, 'Filtered image random');
+fprintf('The correspoding RMSD is %2.3f.\n', RMSD_b_ran);
+
+
+
+%% Image 2: Grass Noisy
+
+% Reading inputB
+inputG = im2double(imread('../data/grass.png'));
+
+% Corrupting image with noise
+[xg,yg] = size(inputG);
+sd_g = 0.05*(max(max(inputG)) - min(min(inputG)));
+corrupted_G = inputG + sd_g*randn(xg,yg);
+corrupted_G = corrupted_G(1:2:end,1:2:end);
+inputG = inputG(1:2:end,1:2:end);
+%% Patch-based filtering with optimal parameters
+tic;
+h_g = 0.17625;
+filtered_G = myPatchBasedFiltering(corrupted_G,9,25,9,h_g);
+RMSDg = sqrt(sum(sum((filtered_G-inputG).^2))/(xg*yg));
+my_imshow(inputG, 'input image', corrupted_G, 'Corrupted image', filtered_G, 'Filtered image optimum');
+toc;
+%%% Optimal parameter values:
+% The optimal value of the standard deviation (SD) is h
+fprintf('The correspoding RMSD is %2.3f.\n', RMSDg);
+
+%% Note:
+% The mask has been scaled to the range [0, 255] for the purpose of display.
+
+mask = fspecial('gaussian', 9, 1.5);
+my_imshow(mask, 'Mask to make patches isotropic')
+%% Patch-based filtering with sub-optimal parameters
+
+%% 0.9 SD
+tic;
+filtered_g_9 = myPatchBasedFiltering(corrupted_G,9,25,9,h_g*0.9);
+RMSD_g9 = sqrt(sum(sum((filtered_g_9-inputG).^2))/(xg*yg));
+my_imshow(inputG, 'input image', corrupted_G, 'Corrupted image', filtered_g_9, 'Filtered image 0.9');
+fprintf('The correspoding RMSD is %2.3f.\n', RMSD_g9);
+toc;
+%% 1.1 SD
+filtered_g_11 = myPatchBasedFiltering(corrupted_G,9,25,9,h_g*1.1);
+RMSD_g11 = sqrt(sum(sum((filtered_g_11-inputG).^2))/(xg*yg));
+my_imshow(inputG, 'input image', corrupted_G, 'Corrupted image', filtered_g_11, 'Filtered image 1.1');
+fprintf('The correspoding RMSD is %2.3f.\n', RMSD_g11);
+
+
+% Image 3: Honey Comb
+
+%%Reading input
+inputH = im2double(imread('../data/honeyCombReal.png'));
+
+%% Corrupting image with noise
+[xh,yh] = size(inputH);
+sd_h = 0.05*(max(max(inputH)) - min(min(inputH)));
+corrupted_H = inputH + sd_g*randn(xh,yh);
+corrupted_H = corrupted_H(1:2:end,1:2:end);
+inputH = inputH(1:2:end,1:2:end);
+%% Patch-based filtering with optimal parameters
+tic;
+h_h = 1.25;
+filtered_H = myPatchBasedFiltering(corrupted_H,9,25,1.5,h_h);
+RMSD_h = sqrt(sum(sum((filtered_H-inputH).^2))/(xh*yh));
+my_imshow(inputH, 'input image', corrupted_H, 'Corrupted image', filtered_H, 'Filtered image optimum');
+toc;
+%%% Optimal parameter values:
+% The optimal value of the standard deviation (SD) is h
+fprintf('The correspoding RMSD is %2.3f.\n', RMSD_h);
+
+%% Note:
+% The mask has been scaled to the range [0, 255] for the purpose of display.
+
+mask = fspecial('gaussian', 9, 1.5);
+my_imshow(mask, 'Mask to make patches isotropic')
+%% Patch-based filtering with sub-optimal parameters
+
+%% 0.9 SD
+tic;
+filtered_H_9 = myPatchBasedFiltering(corrupted_H,9,25,1.5,h_h*0.9);
+RMSD_h9 = sqrt(sum(sum((filtered_H_9-inputH).^2))/(xh*yh));
+my_imshow(inputH, 'input image', corrupted_H, 'Corrupted image', filtered_H_9, 'Filtered image 0.9');
+fprintf('The correspoding RMSD is %2.3f.\n', RMSD_h9);
+toc;
+%% 1.1 SD
+filtered_h_11 = myPatchBasedFiltering(corrupted_H,9,25,1.5,h_h*1.1);
+RMSD_h11 = sqrt(sum(sum((filtered_h_11-inputH).^2))/(xh*yh));
+my_imshow(inputH, 'input image', corrupted_H, 'Corrupted image', filtered_h_11, 'Filtered image 1.1');
+fprintf('The correspoding RMSD is %2.3f.\n', RMSD_h11);
+
+##### SOURCE END #####
+--></body></html>
