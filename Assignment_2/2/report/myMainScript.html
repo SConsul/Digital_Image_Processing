@@ -1,0 +1,385 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>myMainScript</title><meta name="generator" content="MATLAB 9.2"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-08-20"><meta name="DC.source" content="myMainScript.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">Processing image 1</a></li><li><a href="#3">Displaying mask used</a></li><li><a href="#4">Displaying images</a></li><li><a href="#5">Optimal sigma_space is : 1.178 and Optimal sigma_intensity is: 0.1720, where we get optimal RSMD to be=</a></li><li><a href="#6">Calculating non optimal RMSD</a></li><li><a href="#7">RMSD with 0.9*sigma_space and 1*sigma_intensity</a></li><li><a href="#8">RMSD with 1.1*sigma_space and 1*sigma_intensity</a></li><li><a href="#9">RMSD with 1*sigma_space and 0.9*sigma_intensity</a></li><li><a href="#10">RMSD with 1*sigma_space and 1.1*sigma_intensity</a></li><li><a href="#11">Processing image 2</a></li><li><a href="#12">Displaying mask used</a></li><li><a href="#13">Displaying images</a></li><li><a href="#14">Optimal sigma_space is : 0.7107 and Optimal sigma_intensity is: 0.7503 where we get optimal RSMD to be=</a></li><li><a href="#15">Calculating non optimal RMSD</a></li><li><a href="#16">RMSD with 0.9*sigma_space and 1*sigma_intensity</a></li><li><a href="#17">RMSD with 1.1*sigma_space and 1*sigma_intensity</a></li><li><a href="#18">RMSD with 1*sigma_space and 0.9*sigma_intensity</a></li><li><a href="#19">RMSD with 1*sigma_space and 1.1*sigma_intensity</a></li><li><a href="#20">Processing image 3</a></li><li><a href="#21">Displaying mask used</a></li><li><a href="#22">Displaying images</a></li><li><a href="#23">Optimal sigma_space is : 0.693 and Optimal sigma_intensity is: 0.86, where we get optimal RSMD to be=</a></li><li><a href="#24">Calculating non optimal RMSD</a></li><li><a href="#25">RMSD with 0.9*sigma_space and 1*sigma_intensity</a></li><li><a href="#26">RMSD with 1.1*sigma_space and 1*sigma_intensity</a></li><li><a href="#27">RMSD with 1*sigma_space and 0.9*sigma_intensity</a></li><li><a href="#28">RMSD with 1*sigma_space and 1.1*sigma_intensity</a></li></ul></div><pre class="codeinput"><span class="comment">%MyMainScript</span>
+rng(42);
+tic;
+</pre><h2 id="2">Processing image 1</h2><pre class="codeinput">storedStructure = load(<span class="string">'../data/barbara.mat'</span>);
+input = storedStructure.imageOrig;
+[height,width] = size(input);
+
+noise = randn(size(input));
+input_noise = input + 0.05*(max(max(input)) - min(min(input)))*noise;
+input_noise = input_noise/(max(max(input_noise)) - min(min(input_noise)));
+
+output = myBilateralFiltering(input_noise,1.178,0.1720);
+output = output/(max(max(output)) - min(min(output)));
+input = input/(max(max(input)) - min(min(input)));
+
+
+RMSD = sqrt(sum(sum((output-input).^2))/(width*height));
+
+hsize = floor(4*1.178);
+gaussian_space = fspecial(<span class="string">'gaussian'</span>,[2*hsize+1,2*hsize+1],1.178);
+</pre><h2 id="3">Displaying mask used</h2><pre class="codeinput">my_imshow(mat2gray(gaussian_space),<span class="string">'Gaussian space mask used for Image 1'</span>)
+</pre><img vspace="5" hspace="5" src="myMainScript_01.png" alt=""> <h2 id="4">Displaying images</h2><pre class="codeinput">my_imshow(input, <span class="string">"Original Image 1"</span>,input_noise,<span class="string">"Corrupted image 1"</span>,output,<span class="string">"Filtered image 1"</span>);
+</pre><img vspace="5" hspace="5" src="myMainScript_02.png" alt=""> <h2 id="5">Optimal sigma_space is : 1.178 and Optimal sigma_intensity is: 0.1720, where we get optimal RSMD to be=</h2><pre class="codeinput">disp(RMSD);
+</pre><pre class="codeoutput">    0.0362
+
+</pre><h2 id="6">Calculating non optimal RMSD</h2><pre class="codeinput">output1 = myBilateralFiltering(input_noise,1.178*0.9,0.1720);
+output1 = output1/(max(max(output1)) - min(min(output1)));
+output2 = myBilateralFiltering(input_noise,1.178*1.1,0.1720);
+output2 = output1/(max(max(output2)) - min(min(output2)));
+output3 = myBilateralFiltering(input_noise,1.178,0.1720*0.9);
+output3 = output3/(max(max(output3)) - min(min(output3)));
+output4 = myBilateralFiltering(input_noise,1.178,0.1720*1.1);
+output4 = output4/(max(max(output4)) - min(min(output4)));
+
+RMSD1 = sqrt(1/(width*height)*sum(sum((output1-input).^2)));
+RMSD2 = sqrt(1/(width*height)*sum(sum((output2-input).^2)));
+RMSD3 = sqrt(1/(width*height)*sum(sum((output3-input).^2)));
+RMSD4 = sqrt(1/(width*height)*sum(sum((output4-input).^2)));
+</pre><h2 id="7">RMSD with 0.9*sigma_space and 1*sigma_intensity</h2><pre class="codeinput">disp(RMSD1);
+</pre><pre class="codeoutput">    0.0358
+
+</pre><h2 id="8">RMSD with 1.1*sigma_space and 1*sigma_intensity</h2><pre class="codeinput">disp(RMSD2);
+</pre><pre class="codeoutput">    0.1270
+
+</pre><h2 id="9">RMSD with 1*sigma_space and 0.9*sigma_intensity</h2><pre class="codeinput">disp(RMSD3);
+</pre><pre class="codeoutput">    0.0356
+
+</pre><h2 id="10">RMSD with 1*sigma_space and 1.1*sigma_intensity</h2><pre class="codeinput">disp(RMSD4)
+
+toc;
+</pre><pre class="codeoutput">    0.0377
+
+Elapsed time is 40.254955 seconds.
+</pre><h2 id="11">Processing image 2</h2><pre class="codeinput">rng(42)
+tic;
+input=im2double(imread(<span class="string">'../data/honeyCombReal.png'</span>));
+[height,width] = size(input);
+
+noise = randn(size(input));
+input_noise = input + 0.05*(max(max(input)) - min(min(input)))*noise;
+input_noise = input_noise/(max(max(input_noise)) - min(min(input_noise)));
+
+output = myBilateralFiltering(input_noise,0.7107,0.7503);
+output = output/(max(max(output)) - min(min(output)));
+input = input/(max(max(input)) - min(min(input)));
+
+
+RMSD = sqrt(sum(sum((output-input).^2))/(width*height));
+hsize = floor(4*0.7107);
+gaussian_space = fspecial(<span class="string">'gaussian'</span>,[2*hsize+1,2*hsize+1],0.7107);
+</pre><h2 id="12">Displaying mask used</h2><pre class="codeinput">my_imshow(mat2gray(gaussian_space),<span class="string">'Gaussian space mask used for Image 2'</span>)
+</pre><img vspace="5" hspace="5" src="myMainScript_03.png" alt=""> <h2 id="13">Displaying images</h2><pre class="codeinput">my_imshow(input, <span class="string">"Original Image 2"</span>,input_noise,<span class="string">"Corrupted image 2"</span>,output,<span class="string">"Filtered image 2"</span>);
+</pre><img vspace="5" hspace="5" src="myMainScript_04.png" alt=""> <h2 id="14">Optimal sigma_space is : 0.7107 and Optimal sigma_intensity is: 0.7503 where we get optimal RSMD to be=</h2><pre class="codeinput">disp(RMSD);
+</pre><pre class="codeoutput">    0.0416
+
+</pre><h2 id="15">Calculating non optimal RMSD</h2><pre class="codeinput">output1 = myBilateralFiltering(input_noise,0.7107*0.9,0.7503);
+output1 = output1/(max(max(output1)) - min(min(output1)));
+output2 = myBilateralFiltering(input_noise,0.7107*1.1,0.7503);
+output2 = output1/(max(max(output2)) - min(min(output2)));
+output3 = myBilateralFiltering(input_noise,0.7107,0.7503*0.9);
+output3 = output3/(max(max(output3)) - min(min(output3)));
+output4 = myBilateralFiltering(input_noise,0.7107,0.7503*1.1);
+output4 = output4/(max(max(output4)) - min(min(output4)));
+
+RMSD1 = sqrt(1/(width*height)*sum(sum((output1-input).^2)));
+RMSD2 = sqrt(1/(width*height)*sum(sum((output2-input).^2)));
+RMSD3 = sqrt(1/(width*height)*sum(sum((output3-input).^2)));
+RMSD4 = sqrt(1/(width*height)*sum(sum((output4-input).^2)));
+</pre><h2 id="16">RMSD with 0.9*sigma_space and 1*sigma_intensity</h2><pre class="codeinput">disp(RMSD1);
+</pre><pre class="codeoutput">    0.0496
+
+</pre><h2 id="17">RMSD with 1.1*sigma_space and 1*sigma_intensity</h2><pre class="codeinput">disp(RMSD2);
+</pre><pre class="codeoutput">    0.0598
+
+</pre><h2 id="18">RMSD with 1*sigma_space and 0.9*sigma_intensity</h2><pre class="codeinput">disp(RMSD3);
+</pre><pre class="codeoutput">    0.0416
+
+</pre><h2 id="19">RMSD with 1*sigma_space and 1.1*sigma_intensity</h2><pre class="codeinput">disp(RMSD4)
+toc;
+</pre><pre class="codeoutput">    0.0416
+
+Elapsed time is 11.172595 seconds.
+</pre><h2 id="20">Processing image 3</h2><pre class="codeinput">rng(42)
+tic;
+input=im2double(imread(<span class="string">'../data/grass.png'</span>));
+[height,width] = size(input);
+
+noise = randn(size(input));
+input_noise = input + 0.05*(max(max(input)) - min(min(input)))*noise;
+input_noise = input_noise/(max(max(input_noise)) - min(min(input_noise)));
+
+output = myBilateralFiltering(input_noise,0.693,0.86);
+output = output/(max(max(output)) - min(min(output)));
+input = input/(max(max(input)) - min(min(input)));
+
+
+RMSD = sqrt(sum(sum((output-input).^2))/(width*height));
+hsize = floor(4*0.693);
+gaussian_space = fspecial(<span class="string">'gaussian'</span>,[2*hsize+1,2*hsize+1],0.693);
+</pre><h2 id="21">Displaying mask used</h2><pre class="codeinput">my_imshow(mat2gray(gaussian_space),<span class="string">'Gaussian space mask used for Image 3'</span>)
+</pre><img vspace="5" hspace="5" src="myMainScript_05.png" alt=""> <h2 id="22">Displaying images</h2><pre class="codeinput">my_imshow(input, <span class="string">"Original Image 3"</span>,input_noise,<span class="string">"Corrupted image 3"</span>,output,<span class="string">"Filtered image 3"</span>);
+</pre><img vspace="5" hspace="5" src="myMainScript_06.png" alt=""> <h2 id="23">Optimal sigma_space is : 0.693 and Optimal sigma_intensity is: 0.86, where we get optimal RSMD to be=</h2><pre class="codeinput">disp(RMSD);
+</pre><pre class="codeoutput">    0.0458
+
+</pre><h2 id="24">Calculating non optimal RMSD</h2><pre class="codeinput">output1 = myBilateralFiltering(input_noise,0.693*0.9,0.86);
+output1 = output1/(max(max(output1)) - min(min(output1)));
+output2 = myBilateralFiltering(input_noise,0.693*1.1,0.86);
+output2 = output1/(max(max(output2)) - min(min(output2)));
+output3 = myBilateralFiltering(input_noise,0.693,0.86*0.9);
+output3 = output3/(max(max(output3)) - min(min(output3)));
+output4 = myBilateralFiltering(input_noise,0.693,0.86*1.1);
+output4 = output4/(max(max(output4)) - min(min(output4)));
+
+RMSD1 = sqrt(1/(width*height)*sum(sum((output1-input).^2)));
+RMSD2 = sqrt(1/(width*height)*sum(sum((output2-input).^2)));
+RMSD3 = sqrt(1/(width*height)*sum(sum((output3-input).^2)));
+RMSD4 = sqrt(1/(width*height)*sum(sum((output4-input).^2)));
+</pre><h2 id="25">RMSD with 0.9*sigma_space and 1*sigma_intensity</h2><pre class="codeinput">disp(RMSD1);
+</pre><pre class="codeoutput">    0.0568
+
+</pre><h2 id="26">RMSD with 1.1*sigma_space and 1*sigma_intensity</h2><pre class="codeinput">disp(RMSD2);
+</pre><pre class="codeoutput">    0.0536
+
+</pre><h2 id="27">RMSD with 1*sigma_space and 0.9*sigma_intensity</h2><pre class="codeinput">disp(RMSD3);
+</pre><pre class="codeoutput">    0.0459
+
+</pre><h2 id="28">RMSD with 1*sigma_space and 1.1*sigma_intensity</h2><pre class="codeinput">disp(RMSD4)
+toc;
+</pre><pre class="codeoutput">    0.0458
+
+Elapsed time is 3.701163 seconds.
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%MyMainScript
+rng(42);
+tic;
+%% Processing image 1
+
+storedStructure = load('../data/barbara.mat');
+input = storedStructure.imageOrig;
+[height,width] = size(input);
+
+noise = randn(size(input));
+input_noise = input + 0.05*(max(max(input)) - min(min(input)))*noise;
+input_noise = input_noise/(max(max(input_noise)) - min(min(input_noise)));
+
+output = myBilateralFiltering(input_noise,1.178,0.1720);
+output = output/(max(max(output)) - min(min(output)));
+input = input/(max(max(input)) - min(min(input)));
+
+
+RMSD = sqrt(sum(sum((output-input).^2))/(width*height));
+
+hsize = floor(4*1.178);
+gaussian_space = fspecial('gaussian',[2*hsize+1,2*hsize+1],1.178);
+%% Displaying mask used
+my_imshow(mat2gray(gaussian_space),'Gaussian space mask used for Image 1')
+
+
+%% Displaying images
+my_imshow(input, "Original Image 1",input_noise,"Corrupted image 1",output,"Filtered image 1");
+%% Optimal sigma_space is : 1.178 and Optimal sigma_intensity is: 0.1720, where we get optimal RSMD to be=
+disp(RMSD);
+%% Calculating non optimal RMSD
+output1 = myBilateralFiltering(input_noise,1.178*0.9,0.1720);
+output1 = output1/(max(max(output1)) - min(min(output1)));
+output2 = myBilateralFiltering(input_noise,1.178*1.1,0.1720);
+output2 = output1/(max(max(output2)) - min(min(output2)));
+output3 = myBilateralFiltering(input_noise,1.178,0.1720*0.9);
+output3 = output3/(max(max(output3)) - min(min(output3)));
+output4 = myBilateralFiltering(input_noise,1.178,0.1720*1.1);
+output4 = output4/(max(max(output4)) - min(min(output4)));
+
+RMSD1 = sqrt(1/(width*height)*sum(sum((output1-input).^2))); 
+RMSD2 = sqrt(1/(width*height)*sum(sum((output2-input).^2))); 
+RMSD3 = sqrt(1/(width*height)*sum(sum((output3-input).^2))); 
+RMSD4 = sqrt(1/(width*height)*sum(sum((output4-input).^2))); 
+
+%% RMSD with 0.9*sigma_space and 1*sigma_intensity
+disp(RMSD1);
+%% RMSD with 1.1*sigma_space and 1*sigma_intensity
+disp(RMSD2);
+%% RMSD with 1*sigma_space and 0.9*sigma_intensity
+disp(RMSD3);
+%% RMSD with 1*sigma_space and 1.1*sigma_intensity
+disp(RMSD4)
+
+toc;
+
+
+%% Processing image 2
+rng(42)
+tic;
+input=im2double(imread('../data/honeyCombReal.png'));
+[height,width] = size(input);
+
+noise = randn(size(input));
+input_noise = input + 0.05*(max(max(input)) - min(min(input)))*noise;
+input_noise = input_noise/(max(max(input_noise)) - min(min(input_noise)));
+
+output = myBilateralFiltering(input_noise,0.7107,0.7503);
+output = output/(max(max(output)) - min(min(output)));
+input = input/(max(max(input)) - min(min(input)));
+
+
+RMSD = sqrt(sum(sum((output-input).^2))/(width*height));
+hsize = floor(4*0.7107);
+gaussian_space = fspecial('gaussian',[2*hsize+1,2*hsize+1],0.7107);
+%% Displaying mask used
+my_imshow(mat2gray(gaussian_space),'Gaussian space mask used for Image 2')
+
+
+%% Displaying images
+my_imshow(input, "Original Image 2",input_noise,"Corrupted image 2",output,"Filtered image 2"); 
+%% Optimal sigma_space is : 0.7107 and Optimal sigma_intensity is: 0.7503 where we get optimal RSMD to be=
+disp(RMSD);
+
+%% Calculating non optimal RMSD  
+output1 = myBilateralFiltering(input_noise,0.7107*0.9,0.7503);
+output1 = output1/(max(max(output1)) - min(min(output1)));
+output2 = myBilateralFiltering(input_noise,0.7107*1.1,0.7503);
+output2 = output1/(max(max(output2)) - min(min(output2)));
+output3 = myBilateralFiltering(input_noise,0.7107,0.7503*0.9);
+output3 = output3/(max(max(output3)) - min(min(output3)));
+output4 = myBilateralFiltering(input_noise,0.7107,0.7503*1.1);
+output4 = output4/(max(max(output4)) - min(min(output4)));
+
+RMSD1 = sqrt(1/(width*height)*sum(sum((output1-input).^2))); 
+RMSD2 = sqrt(1/(width*height)*sum(sum((output2-input).^2))); 
+RMSD3 = sqrt(1/(width*height)*sum(sum((output3-input).^2))); 
+RMSD4 = sqrt(1/(width*height)*sum(sum((output4-input).^2))); 
+
+%% RMSD with 0.9*sigma_space and 1*sigma_intensity
+disp(RMSD1);
+%% RMSD with 1.1*sigma_space and 1*sigma_intensity
+disp(RMSD2);
+%% RMSD with 1*sigma_space and 0.9*sigma_intensity
+disp(RMSD3);
+%% RMSD with 1*sigma_space and 1.1*sigma_intensity
+disp(RMSD4)
+toc;
+
+
+%% Processing image 3
+rng(42)
+tic;
+input=im2double(imread('../data/grass.png'));
+[height,width] = size(input);
+
+noise = randn(size(input));
+input_noise = input + 0.05*(max(max(input)) - min(min(input)))*noise;
+input_noise = input_noise/(max(max(input_noise)) - min(min(input_noise)));
+
+output = myBilateralFiltering(input_noise,0.693,0.86);
+output = output/(max(max(output)) - min(min(output)));
+input = input/(max(max(input)) - min(min(input)));
+
+
+RMSD = sqrt(sum(sum((output-input).^2))/(width*height));
+hsize = floor(4*0.693);
+gaussian_space = fspecial('gaussian',[2*hsize+1,2*hsize+1],0.693);
+%% Displaying mask used
+my_imshow(mat2gray(gaussian_space),'Gaussian space mask used for Image 3')
+
+
+%% Displaying images
+my_imshow(input, "Original Image 3",input_noise,"Corrupted image 3",output,"Filtered image 3");
+%% Optimal sigma_space is : 0.693 and Optimal sigma_intensity is: 0.86, where we get optimal RSMD to be=
+disp(RMSD);
+
+%% Calculating non optimal RMSD  
+output1 = myBilateralFiltering(input_noise,0.693*0.9,0.86);
+output1 = output1/(max(max(output1)) - min(min(output1)));
+output2 = myBilateralFiltering(input_noise,0.693*1.1,0.86);
+output2 = output1/(max(max(output2)) - min(min(output2)));
+output3 = myBilateralFiltering(input_noise,0.693,0.86*0.9);
+output3 = output3/(max(max(output3)) - min(min(output3)));
+output4 = myBilateralFiltering(input_noise,0.693,0.86*1.1);
+output4 = output4/(max(max(output4)) - min(min(output4)));
+
+RMSD1 = sqrt(1/(width*height)*sum(sum((output1-input).^2))); 
+RMSD2 = sqrt(1/(width*height)*sum(sum((output2-input).^2))); 
+RMSD3 = sqrt(1/(width*height)*sum(sum((output3-input).^2))); 
+RMSD4 = sqrt(1/(width*height)*sum(sum((output4-input).^2))); 
+
+%% RMSD with 0.9*sigma_space and 1*sigma_intensity
+disp(RMSD1);
+%% RMSD with 1.1*sigma_space and 1*sigma_intensity
+disp(RMSD2);
+%% RMSD with 1*sigma_space and 0.9*sigma_intensity
+disp(RMSD3);
+%% RMSD with 1*sigma_space and 1.1*sigma_intensity
+disp(RMSD4)
+toc;
+
+##### SOURCE END #####
+--></body></html>
