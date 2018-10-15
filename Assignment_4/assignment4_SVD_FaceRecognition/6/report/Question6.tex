@@ -1,0 +1,177 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{bm}
+\usepackage{relsize}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{geometry}
+\renewcommand\thesection{\Alph{section}}
+\title{CS 663 Assignment 4}
+\author{Sarthak Consul - 16D100012\\
+Parthasarathi Khirwadkar - 16D070001\\
+Bhishma Dedhia - 16D170005}
+\date{}
+\geometry{
+    a4paper,
+    total={170mm,257mm},
+    left=12mm, 
+    right=12mm, 
+    top=20mm,
+    }
+\begin{document}
+
+\maketitle
+
+\centerline{\textbf{\large\large{{{QUESTION 6}}}}}
+
+
+\section{}
+
+\begin{align*}
+% \centering
+    \bm{\bm{y}}^\intercal\bm{P}\bm{y} &= \bm{y}^\intercal (\bm{A}^\intercal\bm{A})\bm{y} \\
+    &= (\bm{A}\bm{y})^\intercal(\bm{A}\bm{y})\\
+    &= \lvert\lvert \bm{A}\bm{y} \rvert\rvert_2^2 \geq 0 \hspace{5pt}(\because \lvert\lvert\bm{v} \rvert\rvert_2^2 \geq 0 \hspace{2pt}\forall \bm{v} \in \mathbb{R}^m)
+\end{align*}
+
+Let $\bm{u}$ be an eigenvector of $\bm{P}$ with corresponding eigenvalue of $\lambda$,
+\begin{align*}
+    &\hspace{5pt}\bm{P}\bm{u} = \lambda \bm{u}\\
+    &\implies \bm{u}^\intercal(\bm{P}\bm{u}) = \lambda \bm{u}^\intercal\bm{u}\\
+    &\implies \lambda =\frac{\bm{u}^\intercal\bm{P}\bm{u}}{\lvert\lvert\bm{u} \rvert\rvert_2^2} \geq 0 \hspace{5pt}(\because \lvert\lvert\bm{v} \rvert\rvert_2^2 \geq 0 \hspace{2pt}\forall \bm{v} \in \mathbb{R}^n)
+\end{align*}
+
+\begin{align*}
+    \bm{z}^\intercal\bm{Q}\bm{z} &= \bm{z}^\intercal (\bm{A}\bm{A}^\intercal)\bm{z} \\
+    &= (\bm{A}^\intercal\bm{z})^\intercal(\bm{A}^\intercal\bm{z})\\
+    &= \lvert\lvert \bm{A}^\intercal\bm{z} \rvert\rvert_2^2 \geq 0\hspace{5pt}(\because \lvert\lvert\bm{v} \rvert\rvert_2^2 \geq 0 \hspace{2pt}\forall \bm{v} \in \mathbb{R}^n)
+\end{align*}
+
+Let $\bm{v}$ be an eigenvector of $\bm{Q}$ with corresponding eigenvalue of $\mu$,
+\begin{align*}
+    &\hspace{5pt}\bm{Q}\bm{v} = \mu \bm{v}\\
+    &\implies \bm{v}^\intercal(\bm{Q}\bm{v}) = \mu \bm{v}^\intercal\bm{v}\\
+    &\implies \mu =\frac{\bm{v}^\intercal\bm{Q}\bm{v}}{\lvert\lvert\bm{v} \rvert\rvert_2^2} \geq 0 \hspace{5pt}(\because \lvert\lvert\bm{v} \rvert\rvert_2^2 \geq 0 \hspace{2pt}\forall \bm{v} \in \mathbb{R}^m)
+\end{align*}
+Both $\bm{P}$ and $\bm{Q}$ are said to be positive semi-definite matrices. \\
+
+\raggedright
+\section{}
+% \centering
+\begin{align*}
+    \bm{Q}(\bm{Au}) &= (\bm{A} \bm{A}^\intercal)(\bm{A}\bm{u}) \hspace{5pt}(\because \bm{A}\bm{A}^\intercal = \bm{Q})\\
+    &= \bm{A} (\bm{A}^\intercal \bm{A})\bm{u}\\
+    &= \bm{A}(\bm{P}\bm{u}) \hspace{5pt}(\because \bm{A}^\intercal \bm{A} = \bm{P})\\
+    &= \lambda (\bm{A}\bm{u}) \hspace{5pt}(\because \bm{P}\bm{u} = \lambda \bm{u})
+\end{align*}
+$\bm{u}$ is an eigenvector to a nxn matrix and so has n elements.
+\begin{align*}
+    \bm{P}(\bm{A}^\intercal\bm{v}) &= (\bm{A}^\intercal\bm{A}) (\bm{A}^\intercal\bm{v}) \hspace{5pt}(\because \bm{A}^\intercal\bm{A} = \bm{P})\\
+    &= \bm{A}^\intercal (\bm{A}\bm{A}^\intercal)\bm{v}\\
+    &= \bm{A}^\intercal(\bm{Q}\bm{v}) \hspace{5pt}(\because \bm{A}\bm{A}^\intercal = \bm{Q})\\
+    &= \mu (\bm{A}^\intercal\bm{v}) \hspace{5pt}(\because \bm{Q}\bm{v} = \mu \bm{v})
+\end{align*}
+$\bm{v}$ is an eigenvector to a mxm matrix and so has m elements.\\
+
+\raggedright
+\section{}
+% \centering
+Let the eigenvalue of $\bm{Q}$ corresponding to $\bm{v_i}$ by $\mu_i$
+\begin{align*}
+    \bm{A}\bm{u_i} &= \bm{A}\frac{\bm{A}^\intercal \bm{v_i}}{\lvert\lvert\bm{A}^\intercal \bm{v_i} \rvert\rvert_2}\\
+     &= \frac{\bm{A}\bm{A}^\intercal \bm{v_i}}{\lvert\lvert\bm{A}^\intercal \bm{v_i} \rvert\rvert_2}\\
+     &= \frac{\bm{Q} \bm{v_i}}{\lvert\lvert\bm{A}^\intercal \bm{v_i} \rvert\rvert_2}\\
+    &= \frac{\mu_i \bm{v_i}}{\lvert\lvert\bm{A}^\intercal \bm{v_i} \rvert\rvert_2}\\
+     &= \frac{\mu_i}{\lvert\lvert\bm{A}^\intercal \bm{v_i} \rvert\rvert_2} \bm{v_i}\\
+\end{align*}
+As $\bm{Q}$ is positive semi-definite, $\mu_i \geq 0$ (equality results in $\bm{u_i} = \bm{0}$), also the L2-norm of any non-zero vector is always positive.\\
+So \begin{equation*}
+    \gamma_i = \frac{\mu_i}{\lvert\lvert\bm{A}^\intercal \bm{v_i} \rvert\rvert_2}
+    \begin{cases}
+    \geq 0, & \text{if }\bm{A}^\intercal \bm{v_i} \neq \bm{0}\\
+    = 0, & \text{if} \bm{A}^\intercal \bm{v_i} = \bm{0}
+  \end{cases}
+\end{equation*}
+
+So, there exists $\gamma_i \geq 0$ such that $\bm{Au_i} = \gamma_i \bm{v_i}$\\
+
+\raggedright
+\section{}
+% \centering
+From the result obtained in part C,
+$\bm{A}\bm{u}_i = \gamma_i \bm{v}_i $, $\gamma_i \geq 0 \hspace{10pt}\forall i=1,2,\dots,m$
+\begin{align*}
+    \bm{U}\bm{\Gamma} &= 
+        \begin{bmatrix}
+        \bm{v}_1| & \bm{v}_2|& \bm{v}_3|& \dots |& \bm{v}_m
+        \end{bmatrix}
+        \begin{bmatrix}
+    \gamma_1 & 0 & 0 & \dots & 0\\
+    0 & \gamma_2 & 0 & \dots & 0\\
+    0 & 0 & \gamma_3 & \dots  & 0\\
+    \vdots & \vdots & \vdots & \ddots & \vdots\\
+    0 & 0 & 0 & 0 & \gamma_m
+\end{bmatrix}\\\\
+&= \begin{bmatrix}
+        \gamma_1\bm{v}_1| & \gamma_2\bm{v}_2|& \gamma_3\bm{v}_3|& \dots |& \gamma_m\bm{v}_m
+        \end{bmatrix}\\
+&= \begin{bmatrix}
+        \bm{Au}_1| & \bm{Au}_2|& \bm{Au}_3|& \dots |& \bm{Au}_m
+        \end{bmatrix}\\
+&= \bm{A}\begin{bmatrix}
+        \bm{u}_1| & \bm{u}_2|& \bm{u}_3|& \dots |& \bm{u}_m
+        \end{bmatrix}\\  
+&=\bm{AV}
+\end{align*}
+\[\bm{u}_i^\intercal\bm{u}_j =\frac{\bm{v}_i^\intercal\bm{A}\bm{A}^\intercal \bm{v_j}}{\lvert\lvert\bm{A}^\intercal \bm{v_i} \rvert\rvert_2 \lvert\lvert\bm{A}^\intercal \bm{v_j} \rvert\rvert_2} = 
+\begin{cases}
+0, & \text{for } i\neq j\\
+1, & \text{for } i=j
+\end{cases}
+\]
+\vspace{5pt}
+Thus $\bm{V}\bm{V}^\intercal = \bm{I_n}$ (i.e.$\bm{V}$ is orthonormal)
+\begin{align*}
+    \therefore \bm{A}\bm{V}\bm{V}^\intercal &= \bm{U\Gamma}\bm{V}^\intercal\\
+    \bm{A}&= \bm{U\Gamma}\bm{V}^\intercal
+\end{align*}
+% \begin{align*}
+%     \bm{U\Gamma V^\intercal} &= \bm{U}
+% \begin{bmatrix}
+%     \gamma_1 & 0 & 0 & \dots & 0 \\
+%     0 & \gamma_2 & \dots & 0 & 0 \\
+%     0 & 0 & \gamma_3 & \dots  & 0 \\
+%     \vdots & \vdots & \vdots & \ddots & \vdots \\
+%     0 & 0 & 0 & 0 & \gamma_m
+% \end{bmatrix}
+% \begin{bmatrix}
+%     \bm{u}_1^\intercal \\
+%     \bm{u}_2^\intercal\\
+%     \vdots\\
+%     \bm{u}_m^\intercal\\
+% \end{bmatrix}\\
+% &=
+% \Big[\bm{v}_1 \big|\bm{v}_2 \big| \bm{v}_3 \big| \dots \big| \bm{v}_m \Big]
+% \begin{bmatrix}
+% \gamma_1 \bm{u}_1^\intercal \\
+% \gamma_2 \bm{u}_2^\intercal\\
+%     \vdots\\
+% \gamma_m \bm{u}_m^\intercal\\
+% \end{bmatrix}\\
+% \end{align*}
+
+% \begin{align*}
+%     \{\bm{U\Gamma V^\intercal}\}_{j,k}&= \sum_{i=1}^m \gamma_i \bm{v}_{ji}\bm{u}_{ik}\\
+%     &= 
+% \end{align*}
+
+
+
+% % \begin{bmatrix}
+% %     \gamma_1 & 0 & 0 & 0 & 0 & \dots  & 0 \\
+% %     0 & \gamma_2 & 0 & 0 & 0 & \dots  & 0 \\
+% %     \vdots & \vdots & \ddots &  &\vdots & \ddots& \vdots \\
+% %     0 & 0 & 0 & \gamma_m & 0 &\dots  & 0\\
+% %     \vdots & \vdots & \vdots & \vdots & \vdots & \ddots& \vdots \\
+% %     0 & 0 & 0 & 0 & 0 & \dots  & 0\\
+% % \end{bmatrix}
+\end{document}

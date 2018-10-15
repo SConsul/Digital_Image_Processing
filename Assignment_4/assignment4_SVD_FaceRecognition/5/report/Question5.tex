@@ -1,0 +1,49 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{bm}
+\usepackage{relsize}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{geometry}
+\title{CS 663 Assignment 4}
+\author{Sarthak Consul - 16D100012\\
+Parthasarathi Khirwadkar - 16D070001\\
+Bhishma Dedhia - 16D170005}
+\date{}
+\geometry{
+    a4paper,
+    total={170mm,257mm},
+    left=12mm, 
+    right=12mm, 
+    top=20mm,
+    }
+\begin{document}
+
+\maketitle
+
+\centerline{\textbf{\large\large{{{QUESTION 5}}}}}
+
+\begin{align*}
+\centering
+    J(\bm{e}) &= \sum_{i=1}^N ||\bm{x_i} -\bm{\bar{x}}-\bm{e}^\intercal (\bm{x_i} -\bm{\bar{x}})\bm{e}||^2\\
+    &= \sum_{i=1}^N ||\bm{x_i} -\bm{\bar{x}}||^2 - \bm{e}^\intercal\bm{S}\bm{e} \hspace{10pt}(\bm{S} = (N-1)\bm{C})
+\end{align*}
+Thus the direction, $\bm{e}$,  for which $J(\bm{e})$ is minimized is that which maximizes $\bm{e}^\intercal\bm{C}\bm{e}$.\\
+Let the eigenvalues of S be $\lambda_1 > \lambda_1 > \dots > \lambda_{n-1}$\\
+To find the $\bm{f}$ that maximizes $J(\bm{f})$ given $\bm{f} \perp \bm{e}$ and $||\bm{f}|| = 1$, applying the Lagrangian Multiplier Test,\\
+\[
+\mathlarger{\mathlarger{\nabla}}_{f}\Big[ \bm{f}^\intercal\bm{Sf} - \lambda (\bm{f}^\intercal\bm{f} - 1) -\beta (\bm{e}^\intercal\bm{f}) \Big] = 0 \]
+\[ 2\bm{S}\bm{f} - 2\lambda\bm{f} - \beta\bm{e} = 0\]
+Pre-multipying both sides with $\bm{e}^\intercal$,
+\[ 2(\bm{S}^\intercal\bm{e})^\intercal\bm{f} - 2\lambda\bm{e}^\intercal\bm{f} - \beta\bm{e}^\intercal\bm{e} = 0\]
+As $\bm{f} \perp \bm{e}$, $\bm{e}^\intercal\bm{f} = 0$. Also $\bm{S}$ is symmetric and so $\bm{S}^\intercal\bm{e} = \bm{S}\bm{e} = \lambda_1\bm{e}$ and finally  $\bm{e}^\intercal\bm{e} = 1$
+\[\implies 2\lambda_1\bm{e}^\intercal\bm{f} - \beta = 0\]
+\[\implies \beta = 0\]
+\[\text{Thus }\bm{Sf} = \lambda \bm{f} \hspace{3pt} \big(\text{i.e. }\bm{f} \text{ is an eigenvector of }\bm{S} \big)\]
+Let the eigenvalue of $\bm{S}$ corresponding to $\bm{f}$ be $\mu$
+\[J(\bm{f}) = \mu^2 \hspace{5pt}(\text{As }\bm{f}\text{ is of unit norm})\]
+Maximizing $J(\bm{f})$ would mean that $\bm(f)$ corresponds to the largest eigenvalue, given that it should be orthogonal to $\bm{e}$.\\
+$\mu \neq \lambda_1$ as it is given that $\bm{C}$ and so $\bm{S}$ has distinct eigenvalues and if $\mu = \lambda_1$, that would mean $\bm{f} = \bm{e}$ (and so $\bm{f} \not\perp \bm{e}$) $\Rightarrow\mskip-\thinmuskip\Leftarrow$\\
+The next best choice of $\mu$ is $\lambda_2$ and since eigenvectors of symmetric matrices are orthogonal, no contradictions arise.\\
+Thus $\bm{f}$ has to be the eignevector corresponding to the second largest eigenvalue 
+
+\end{document}
