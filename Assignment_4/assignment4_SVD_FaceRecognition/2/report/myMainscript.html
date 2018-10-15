@@ -90,8 +90,8 @@ U_data=U./sqrt(sum(U_2));
 
 image =  reshape(im2double((imread(imgPath))),[192*168,1]);
 image_bar = image - mean_face_yale;
-figure;
 k_vec = [2, 10, 20, 50, 75, 100, 125, 150, 175];
+figure;
 </pre><img vspace="5" hspace="5" src="myMainscript_01.png" alt=""> <h2 id="2">Reconstructing face 40 of person 38 for various values of K</h2><pre class="codeinput"><span class="keyword">for</span> i=1:9
     vk = U_data(:,1:k_vec(1,i));
     coeff = vk'*image_bar;
@@ -100,12 +100,38 @@ k_vec = [2, 10, 20, 50, 75, 100, 125, 150, 175];
     imshow(reshape(reconstruction,[192 168]));
     title(num2str(k_vec(1,i)));
 <span class="keyword">end</span>
-</pre><img vspace="5" hspace="5" src="myMainscript_02.png" alt=""> <h2 id="3">Showing the eigen faces for top 25 eigen values on the dataset</h2><pre class="codeinput">figure;
+</pre><img vspace="5" hspace="5" src="myMainscript_02.png" alt=""> <h2 id="3">Showing the eigen faces for top 25 eigen values on the dataset</h2><pre class="codeinput">figure(1);
 <span class="keyword">for</span> i=1:25<span class="comment">%Top 25 eigen faces shown</span>
     subplot(5,5,i);
+    truesize(1,[192,168]);
      imshow(mat2gray(reshape(U_data(:,i),[192 168])));
     title(num2str(i));
 <span class="keyword">end</span>
+</pre><pre class="codeoutput">Warning: Image is too big to fit on screen; displaying at 63% scale. 
+Warning: Image is too big to fit on screen; displaying at 63% scale. 
+Warning: Image is too big to fit on screen; displaying at 63% scale. 
+Warning: Image is too big to fit on screen; displaying at 63% scale. 
+Warning: Image is too big to fit on screen; displaying at 63% scale. 
+Warning: Image is too big to fit on screen; displaying at 63% scale. 
+Warning: Image is too big to fit on screen; displaying at 63% scale. 
+Warning: Image is too big to fit on screen; displaying at 63% scale. 
+Warning: Image is too big to fit on screen; displaying at 63% scale. 
+Warning: Image is too big to fit on screen; displaying at 63% scale. 
+Warning: Image is too big to fit on screen; displaying at 63% scale. 
+Warning: Image is too big to fit on screen; displaying at 63% scale. 
+Warning: Image is too big to fit on screen; displaying at 63% scale. 
+Warning: Image is too big to fit on screen; displaying at 63% scale. 
+Warning: Image is too big to fit on screen; displaying at 63% scale. 
+Warning: Image is too big to fit on screen; displaying at 63% scale. 
+Warning: Image is too big to fit on screen; displaying at 63% scale. 
+Warning: Image is too big to fit on screen; displaying at 63% scale. 
+Warning: Image is too big to fit on screen; displaying at 63% scale. 
+Warning: Image is too big to fit on screen; displaying at 63% scale. 
+Warning: Image is too big to fit on screen; displaying at 63% scale. 
+Warning: Image is too big to fit on screen; displaying at 63% scale. 
+Warning: Image is too big to fit on screen; displaying at 63% scale. 
+Warning: Image is too big to fit on screen; displaying at 63% scale. 
+Warning: Image is too big to fit on screen; displaying at 63% scale. 
 </pre><img vspace="5" hspace="5" src="myMainscript_03.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% Training images
@@ -133,8 +159,8 @@ U_data=U./sqrt(sum(U_2));
 
 image =  reshape(im2double((imread(imgPath))),[192*168,1]);
 image_bar = image - mean_face_yale;
-figure;
 k_vec = [2, 10, 20, 50, 75, 100, 125, 150, 175];
+figure;
 %% Reconstructing face 40 of person 38 for various values of K
 for i=1:9
     vk = U_data(:,1:k_vec(1,i));
@@ -145,9 +171,10 @@ for i=1:9
     title(num2str(k_vec(1,i)));
 end
 %% Showing the eigen faces for top 25 eigen values on the dataset
-figure;
+figure(1);
 for i=1:25%Top 25 eigen faces shown
     subplot(5,5,i);
+    truesize(1,[192,168]);
      imshow(mat2gray(reshape(U_data(:,i),[192 168])));
     title(num2str(i));
 end

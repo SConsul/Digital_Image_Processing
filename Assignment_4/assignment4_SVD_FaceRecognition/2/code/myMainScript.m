@@ -23,8 +23,8 @@ U_data=U./sqrt(sum(U_2));
 
 image =  reshape(im2double((imread(imgPath))),[192*168,1]);
 image_bar = image - mean_face_yale;
-figure;
 k_vec = [2, 10, 20, 50, 75, 100, 125, 150, 175];
+figure;
 %% Reconstructing face 40 of person 38 for various values of K
 for i=1:9
     vk = U_data(:,1:k_vec(1,i));
@@ -35,9 +35,10 @@ for i=1:9
     title(num2str(k_vec(1,i)));
 end
 %% Showing the eigen faces for top 25 eigen values on the dataset
-figure;
+figure(1);
 for i=1:25%Top 25 eigen faces shown
     subplot(5,5,i);
+    truesize(1,[192,168]);
      imshow(mat2gray(reshape(U_data(:,i),[192 168])));
     title(num2str(i));
 end

@@ -15,7 +15,7 @@ V= X*V;
 V_2 = V.*V;
 V_data=V./sqrt(sum(V_2));%Normalized eigen faces
 
-k_vec = [155];
+k_vec = [62];
 
  % We calculate mean and variance of coefficients of each person in the 
    %training set. During testing, we calculate the distance of probe 
@@ -56,7 +56,7 @@ for z = 1:1
         end
     end
     people_identified(1,z) = false_positives/32*100;
-    disp(['The false positives for k = ',num2str(k_vec(z)),' is ',num2str( false_positives),'% out of 32 person'])
+    disp(['The false positives for k = ',num2str(k_vec(z)),' is ',num2str(false_positives),'(',num2str(people_identified(1,z)),'%) out of 32 person'])
 end
 %% Calculating false negatives for people present on the training set  
 people_notidentified = zeros(size(k_vec));
@@ -92,7 +92,7 @@ for z = 1:1
         end
     end
     people_notidentified(1,z) = false_negatives/128*100;
-    disp(['The false negatives for k = ',num2str(k_vec(z)),' is ',num2str( false_negatives),'% out of 128 person' ])
+    disp(['The false negatives for k = ',num2str(k_vec(z)),' is ',num2str(false_negatives),'(',num2str(people_notidentified(1,z)),'%) out of 128 person' ])
 end
 
   
