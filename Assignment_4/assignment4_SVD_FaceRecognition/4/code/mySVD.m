@@ -1,4 +1,4 @@
-function [U S V] = mySVD(A)
+function [U S V] = MySVD(A)
 % Computes the Singular Value Decomposition of any mxn matrix A
 [m n] = size(A);
     if(m<=n)
