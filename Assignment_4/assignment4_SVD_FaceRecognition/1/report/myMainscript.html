@@ -1,0 +1,374 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>myMainscript</title><meta name="generator" content="MATLAB 9.2"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-10-15"><meta name="DC.source" content="myMainscript.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">ORL Dataset</a></li><li><a href="#2">Yale Dataset</a></li></ul></div><h2 id="1">ORL Dataset</h2><pre class="codeinput">X = zeros(92*112,192);
+<span class="keyword">for</span> i = 1:32 <span class="comment">%Loading images</span>
+    <span class="keyword">for</span> j = 1:6
+    X(:,6*(i-1)+j) = reshape(im2double((imread(strcat(<span class="string">'../Data/Dataset/s'</span>,num2str(i),<span class="string">'/'</span>,num2str(j),<span class="string">'.pgm'</span>)))),[92*112,1]);
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+mean_face = (sum(X,2)/192);<span class="comment">%Mean face of the dataset</span>
+Xbar = X - mean_face;
+L = Xbar'*Xbar;
+[V,D] = eig(L);
+[d,ind] = sort(diag(D),<span class="string">'descend'</span>);<span class="comment">%Sorting eigen values in descending order</span>
+D = D(ind,ind);
+V = V(:,ind);
+V= X*V;
+V_2 = V.*V;
+V_data=V./sqrt(sum(V_2));<span class="comment">%Normalized eigen faces</span>
+
+
+k_vec = [1, 2, 3, 5, 10, 15, 20, 30, 50, 75, 100, 150, 170];
+rate_rec = zeros(size(k_vec));<span class="comment">%Vector that stores recognition rate for each k</span>
+<span class="keyword">for</span> z = 1:13
+    Vk=V_data(:,1:k_vec(1,z));
+    coeff = Vk'*Xbar;<span class="comment">%Coefficients of the training set</span>
+    rate= 0;
+    <span class="keyword">for</span> i = 1:32
+        <span class="keyword">for</span> j = 7:10
+            z_i =  reshape(im2double((imread(strcat(<span class="string">'../Data/Dataset/s'</span>,num2str(i),<span class="string">'/'</span>,num2str(j),<span class="string">'.pgm'</span>)))),[92*112,1]);
+            z_bar = z_i - mean_face;
+            coeff_z = Vk'*z_bar;<span class="comment">%Coefficient of the probe image</span>
+            error_image = coeff - coeff_z;
+            error_image = error_image.*error_image;
+            error_sum = sum(error_image);
+            [M,I] = min(error_sum);
+            <span class="keyword">if</span>(i == floor((I-1)/6)+1)<span class="comment">%Checking for correct recognition</span>
+                rate=rate+1;
+            <span class="keyword">end</span>
+
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+    rate_rec(1,z) = rate/128*100;
+    disp([<span class="string">'No. of Images correctly identified for k = '</span>,num2str(k_vec(1,z)), <span class="string">' is: '</span> ,num2str(rate)]);
+
+<span class="keyword">end</span>
+figure;
+plot(k_vec,rate_rec);
+title(<span class="string">'Recognition Rate vs k'</span>);
+xlabel(<span class="string">'k'</span>);
+ylabel(<span class="string">'Recognition Rate'</span>);
+axis <span class="string">on</span>
+</pre><pre class="codeoutput">No. of Images correctly identified for k = 1 is: 4
+No. of Images correctly identified for k = 2 is: 60
+No. of Images correctly identified for k = 3 is: 88
+No. of Images correctly identified for k = 5 is: 102
+No. of Images correctly identified for k = 10 is: 121
+No. of Images correctly identified for k = 15 is: 121
+No. of Images correctly identified for k = 20 is: 122
+No. of Images correctly identified for k = 30 is: 122
+No. of Images correctly identified for k = 50 is: 121
+No. of Images correctly identified for k = 75 is: 121
+No. of Images correctly identified for k = 100 is: 120
+No. of Images correctly identified for k = 150 is: 119
+No. of Images correctly identified for k = 170 is: 120
+</pre><img vspace="5" hspace="5" src="myMainscript_01.png" alt=""> <h2 id="2">Yale Dataset</h2><pre class="codeinput">X_yale = zeros(192*168,1520);
+yaleF_person = dir([ <span class="string">'../Data/Dataset/yaleB*'</span>]);
+
+<span class="keyword">for</span> i = 1:38<span class="comment">%Loading training dataset</span>
+    yaleFiles = dir([<span class="string">'../Data/Dataset/'</span> yaleF_person(i).name <span class="string">'/*.pgm'</span>]);
+    <span class="keyword">for</span> j = 1:40
+        imgPath = strcat([<span class="string">'../Data/Dataset/'</span> yaleF_person(i).name <span class="string">'/'</span> yaleFiles(j).name]);
+        X_yale(:,40*(i-1)+j) =  reshape(im2double((imread(imgPath))),[192*168,1]);
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+mean_face_yale = (sum(X_yale,2)/1520);<span class="comment">%Mean face of the dataset</span>
+Xbar_yale = X_yale - mean_face_yale;
+<span class="comment">%Calculating eigen faces using SVD</span>
+[U,S,V] = svds(Xbar_yale,1000);
+[d,ind] = sort(diag(S),<span class="string">'descend'</span>);
+S = S(ind,ind);
+S= sqrt(S);
+U = U(:,ind);
+U_2 = U.*U;
+U_data=U./sqrt(sum(U_2));<span class="comment">%Normalized eigen faces</span>
+
+k_vec1=[1, 2, 3, 5, 10, 15, 20, 30, 50, 60, 65, 75, 100, 200, 300, 500, 1000];
+rate_rec = zeros(size(k_vec1));
+rate_rec1 = zeros(size(k_vec1));
+<span class="keyword">for</span> z = 1:17<span class="comment">%Testing dataset</span>
+    Vk=U_data(:,1:k_vec1(1,z));
+    coeff = Vk'*Xbar_yale;
+    rate= 0;
+    rate1=0;
+    length=0;
+    <span class="keyword">for</span> i = 1:38
+        yaleFiles = dir([<span class="string">'../Data/Dataset/'</span> yaleF_person(i).name <span class="string">'/*.pgm'</span>]);
+        <span class="keyword">for</span> j = 41:size(yaleFiles,1)
+<span class="comment">%             disp(i);</span>
+            imgPath = strcat([<span class="string">'../Data/Dataset/'</span> yaleF_person(i).name <span class="string">'/'</span> yaleFiles(j).name]);
+            z_i =   reshape(im2double((imread(imgPath))),[192*168,1]);
+            z_bar = z_i - mean_face_yale;
+            coeff_z = Vk'*z_bar;
+            error_image = coeff - coeff_z;
+            error_image = error_image.*error_image;
+            error_sum = sum(error_image);
+            [M,I] = min(error_sum);
+            error_sum1 = sum(error_image(4:k_vec1(1,z),:));
+            [M,I1] = min(error_sum1);
+            <span class="keyword">if</span>(i == floor((I-1)/40)+1)
+                rate=rate+1;
+            <span class="keyword">end</span>
+            <span class="keyword">if</span>(i == floor((I1-1)/40)+1)
+                rate1=rate1+1;
+            <span class="keyword">end</span>
+            length=length+1;
+
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+    rate_rec(1,z) = rate/length*100;
+    rate_rec1(1,z) = rate1/length*100;
+    disp([<span class="string">'No. of Images correctly identified for k = '</span>,num2str(k_vec1(1,z)) ,<span class="string">' is: '</span>, num2str(rate)]);
+    disp([<span class="string">'No. of Images correctly identified for k (without top 3 eigen coefficients) = '</span>,num2str(k_vec1(1,z)), <span class="string">' is: '</span> ,num2str(rate1)]);
+<span class="keyword">end</span>
+figure;
+plot(k_vec1,rate_rec);
+title(<span class="string">'Recognition Rate vs k'</span>);
+xlabel(<span class="string">'k'</span>);
+ylabel(<span class="string">'Recognition Rate'</span>);
+axis <span class="string">on</span>
+axis([0 1000 0 100]);
+
+figure;
+plot(k_vec1,rate_rec1);
+title(<span class="string">'Recognition Rate vs k'</span>);
+xlabel(<span class="string">'k (Without considering top 3 eigen coefficients)'</span>);
+ylabel(<span class="string">'Recognition Rate'</span>);
+axis <span class="string">on</span>
+axis([0 1000 0 100]);
+</pre><pre class="codeoutput">No. of Images correctly identified for k = 1 is: 24
+No. of Images correctly identified for k (without top 3 eigen coefficients) = 1 is: 24
+No. of Images correctly identified for k = 2 is: 29
+No. of Images correctly identified for k (without top 3 eigen coefficients) = 2 is: 24
+No. of Images correctly identified for k = 3 is: 28
+No. of Images correctly identified for k (without top 3 eigen coefficients) = 3 is: 24
+No. of Images correctly identified for k = 5 is: 60
+No. of Images correctly identified for k (without top 3 eigen coefficients) = 5 is: 48
+No. of Images correctly identified for k = 10 is: 150
+No. of Images correctly identified for k (without top 3 eigen coefficients) = 10 is: 181
+No. of Images correctly identified for k = 15 is: 186
+No. of Images correctly identified for k (without top 3 eigen coefficients) = 15 is: 285
+No. of Images correctly identified for k = 20 is: 217
+No. of Images correctly identified for k (without top 3 eigen coefficients) = 20 is: 341
+No. of Images correctly identified for k = 30 is: 251
+No. of Images correctly identified for k (without top 3 eigen coefficients) = 30 is: 388
+No. of Images correctly identified for k = 50 is: 276
+No. of Images correctly identified for k (without top 3 eigen coefficients) = 50 is: 445
+No. of Images correctly identified for k = 60 is: 284
+No. of Images correctly identified for k (without top 3 eigen coefficients) = 60 is: 474
+No. of Images correctly identified for k = 65 is: 287
+No. of Images correctly identified for k (without top 3 eigen coefficients) = 65 is: 480
+No. of Images correctly identified for k = 75 is: 289
+No. of Images correctly identified for k (without top 3 eigen coefficients) = 75 is: 491
+No. of Images correctly identified for k = 100 is: 302
+No. of Images correctly identified for k (without top 3 eigen coefficients) = 100 is: 504
+No. of Images correctly identified for k = 200 is: 308
+No. of Images correctly identified for k (without top 3 eigen coefficients) = 200 is: 528
+No. of Images correctly identified for k = 300 is: 314
+No. of Images correctly identified for k (without top 3 eigen coefficients) = 300 is: 536
+No. of Images correctly identified for k = 500 is: 318
+No. of Images correctly identified for k (without top 3 eigen coefficients) = 500 is: 541
+No. of Images correctly identified for k = 1000 is: 319
+No. of Images correctly identified for k (without top 3 eigen coefficients) = 1000 is: 543
+</pre><img vspace="5" hspace="5" src="myMainscript_02.png" alt=""> <img vspace="5" hspace="5" src="myMainscript_03.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% ORL Dataset
+X = zeros(92*112,192);
+for i = 1:32 %Loading images
+    for j = 1:6
+    X(:,6*(i-1)+j) = reshape(im2double((imread(strcat('../Data/Dataset/s',num2str(i),'/',num2str(j),'.pgm')))),[92*112,1]);
+    end
+end
+mean_face = (sum(X,2)/192);%Mean face of the dataset
+Xbar = X - mean_face;
+L = Xbar'*Xbar;
+[V,D] = eig(L);
+[d,ind] = sort(diag(D),'descend');%Sorting eigen values in descending order
+D = D(ind,ind);
+V = V(:,ind);
+V= X*V;
+V_2 = V.*V;
+V_data=V./sqrt(sum(V_2));%Normalized eigen faces
+
+
+k_vec = [1, 2, 3, 5, 10, 15, 20, 30, 50, 75, 100, 150, 170];
+rate_rec = zeros(size(k_vec));%Vector that stores recognition rate for each k
+for z = 1:13
+    Vk=V_data(:,1:k_vec(1,z));
+    coeff = Vk'*Xbar;%Coefficients of the training set
+    rate= 0;
+    for i = 1:32
+        for j = 7:10
+            z_i =  reshape(im2double((imread(strcat('../Data/Dataset/s',num2str(i),'/',num2str(j),'.pgm')))),[92*112,1]);
+            z_bar = z_i - mean_face;
+            coeff_z = Vk'*z_bar;%Coefficient of the probe image
+            error_image = coeff - coeff_z;
+            error_image = error_image.*error_image;
+            error_sum = sum(error_image);
+            [M,I] = min(error_sum);
+            if(i == floor((I-1)/6)+1)%Checking for correct recognition
+                rate=rate+1;
+            end
+    
+        end
+    end
+    rate_rec(1,z) = rate/128*100;
+    disp(['No. of Images correctly identified for k = ',num2str(k_vec(1,z)), ' is: ' ,num2str(rate)]);
+    
+end   
+figure;
+plot(k_vec,rate_rec);
+title('Recognition Rate vs k');
+xlabel('k');
+ylabel('Recognition Rate');
+axis on
+
+
+
+%% Yale Dataset
+X_yale = zeros(192*168,1520);
+yaleF_person = dir([ '../Data/Dataset/yaleB*']);
+
+for i = 1:38%Loading training dataset 
+    yaleFiles = dir(['../Data/Dataset/' yaleF_person(i).name '/*.pgm']);
+    for j = 1:40
+        imgPath = strcat(['../Data/Dataset/' yaleF_person(i).name '/' yaleFiles(j).name]);
+        X_yale(:,40*(i-1)+j) =  reshape(im2double((imread(imgPath))),[192*168,1]);
+    end
+end
+
+mean_face_yale = (sum(X_yale,2)/1520);%Mean face of the dataset
+Xbar_yale = X_yale - mean_face_yale;
+%Calculating eigen faces using SVD
+[U,S,V] = svds(Xbar_yale,1000);
+[d,ind] = sort(diag(S),'descend');
+S = S(ind,ind);
+S= sqrt(S);
+U = U(:,ind);
+U_2 = U.*U;
+U_data=U./sqrt(sum(U_2));%Normalized eigen faces
+
+k_vec1=[1, 2, 3, 5, 10, 15, 20, 30, 50, 60, 65, 75, 100, 200, 300, 500, 1000];
+rate_rec = zeros(size(k_vec1));
+rate_rec1 = zeros(size(k_vec1));
+for z = 1:17%Testing dataset
+    Vk=U_data(:,1:k_vec1(1,z));
+    coeff = Vk'*Xbar_yale;
+    rate= 0;
+    rate1=0;
+    length=0;
+    for i = 1:38
+        yaleFiles = dir(['../Data/Dataset/' yaleF_person(i).name '/*.pgm']);
+        for j = 41:size(yaleFiles,1)
+%             disp(i);
+            imgPath = strcat(['../Data/Dataset/' yaleF_person(i).name '/' yaleFiles(j).name]);
+            z_i =   reshape(im2double((imread(imgPath))),[192*168,1]);
+            z_bar = z_i - mean_face_yale;
+            coeff_z = Vk'*z_bar;
+            error_image = coeff - coeff_z;
+            error_image = error_image.*error_image;
+            error_sum = sum(error_image);
+            [M,I] = min(error_sum);
+            error_sum1 = sum(error_image(4:k_vec1(1,z),:));
+            [M,I1] = min(error_sum1);
+            if(i == floor((I-1)/40)+1)
+                rate=rate+1;
+            end
+            if(i == floor((I1-1)/40)+1)
+                rate1=rate1+1;
+            end
+            length=length+1;
+    
+        end
+    end
+    rate_rec(1,z) = rate/length*100;
+    rate_rec1(1,z) = rate1/length*100;
+    disp(['No. of Images correctly identified for k = ',num2str(k_vec1(1,z)) ,' is: ', num2str(rate)]);
+    disp(['No. of Images correctly identified for k (without top 3 eigen coefficients) = ',num2str(k_vec1(1,z)), ' is: ' ,num2str(rate1)]);
+end   
+figure;
+plot(k_vec1,rate_rec);
+title('Recognition Rate vs k');
+xlabel('k');
+ylabel('Recognition Rate');
+axis on
+axis([0 1000 0 100]);
+
+figure;
+plot(k_vec1,rate_rec1);
+title('Recognition Rate vs k');
+xlabel('k (Without considering top 3 eigen coefficients)');
+ylabel('Recognition Rate');
+axis on
+axis([0 1000 0 100]);
+
+    
+##### SOURCE END #####
+--></body></html>

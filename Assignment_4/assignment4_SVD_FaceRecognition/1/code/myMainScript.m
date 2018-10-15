@@ -39,7 +39,7 @@ for z = 1:13
         end
     end
     rate_rec(1,z) = rate/128*100;
-    disp(['No. of Images correctly identified for k = ',num2str(k_vec(1,z)), 'is: ' ,num2str(rate)]);
+    disp(['No. of Images correctly identified for k = ',num2str(k_vec(1,z)), ' is: ' ,num2str(rate)]);
     
 end   
 figure;
@@ -109,8 +109,8 @@ for z = 1:17%Testing dataset
     end
     rate_rec(1,z) = rate/length*100;
     rate_rec1(1,z) = rate1/length*100;
-    disp(['No. of Images correctly identified for k = ',num2str(k_vec1(1,z)) ,'is: ', num2str(rate)]);
-    disp(['No. of Images correctly identified for k (without top 3 eigen coefficients) = ',num2str(k_vec1(1,z)), 'is: ' ,num2str(rate1)]);
+    disp(['No. of Images correctly identified for k = ',num2str(k_vec1(1,z)) ,' is: ', num2str(rate)]);
+    disp(['No. of Images correctly identified for k (without top 3 eigen coefficients) = ',num2str(k_vec1(1,z)), ' is: ' ,num2str(rate1)]);
 end   
 figure;
 plot(k_vec1,rate_rec);

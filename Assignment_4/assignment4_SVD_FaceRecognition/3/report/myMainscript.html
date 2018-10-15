@@ -1,0 +1,265 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>myMainscript</title><meta name="generator" content="MATLAB 9.2"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-10-15"><meta name="DC.source" content="myMainscript.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">Calculating false positives for people not a part of the training set</a></li><li><a href="#3">Calculating false negatives for people present on the training set</a></li></ul></div><pre class="codeinput"><span class="keyword">for</span> i = 1:32 <span class="comment">%Loading images</span>
+    <span class="keyword">for</span> j = 1:6
+    X(:,6*(i-1)+j) = reshape(im2double((imread(strcat(<span class="string">'../Data/Dataset/s'</span>,num2str(i),<span class="string">'/'</span>,num2str(j),<span class="string">'.pgm'</span>)))),[92*112,1]);
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+mean_face = (sum(X,2)/192);<span class="comment">%Mean face of the dataset</span>
+Xbar = X - mean_face;
+L = Xbar'*Xbar;
+[V,D] = eig(L);
+[d,ind] = sort(diag(D),<span class="string">'descend'</span>);<span class="comment">%Sorting eigen values in descending order</span>
+D = D(ind,ind);
+V = V(:,ind);
+V= X*V;
+V_2 = V.*V;
+V_data=V./sqrt(sum(V_2));<span class="comment">%Normalized eigen faces</span>
+
+k_vec = [155];
+
+ <span class="comment">% We calculate mean and variance of coefficients of each person in the</span>
+   <span class="comment">%training set. During testing, we calculate the distance of probe</span>
+   <span class="comment">%image in coefficient space with mean of every person in the training data.</span>
+   <span class="comment">%The person is identified on the basis of closest distance to mean. If</span>
+   <span class="comment">%the closest distance is more than 1.5*variance of this predicted identity</span>
+   <span class="comment">%then we reject the image as not belonging to training dataset</span>
+</pre><h2 id="2">Calculating false positives for people not a part of the training set</h2><pre class="codeinput">people_identified = zeros(size(k_vec));
+<span class="keyword">for</span> z = 1:1
+    Vk=V_data(:,1:k_vec(1,z));
+    coeff = Vk'*Xbar;<span class="comment">%Coefficients of the training set</span>
+    false_positives = 0;
+    mean_coeff = zeros(k_vec(z),32);
+    var_coeff = zeros(1,32);
+    <span class="keyword">for</span> i=1:32
+        mean_coeff(:,i) = sum(coeff(:,6*(i-1)+1:6*i),2)/6;
+        temp = zeros(k_vec(1,z),6);
+        temp = coeff(:,6*(i-1)+1:6*i) - mean_coeff(:,i);
+        var_coeff(i) = sum(sum(temp.*temp))/6;
+
+    <span class="keyword">end</span>
+    <span class="keyword">for</span> i=33:40
+        <span class="keyword">for</span> j =7:10
+            z_i =  reshape(im2double((imread(strcat(<span class="string">'../Data/Dataset/s'</span>,num2str(i),<span class="string">'/'</span>,num2str(j),<span class="string">'.pgm'</span>)))),[92*112,1]);
+            z_bar = z_i - mean_face;
+            coeff_z = Vk'*z_bar;<span class="comment">%Coefficient of the probe image</span>
+            identified = 0;
+            distance = sum((coeff_z-mean_coeff).*(coeff_z-mean_coeff));
+            [M,I]= min(distance);
+
+                <span class="keyword">if</span> M &lt; 1.5*var_coeff(I)
+                    identified=1;
+                <span class="keyword">end</span>
+
+            false_positives = false_positives+identified;
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+    people_identified(1,z) = false_positives/32*100;
+    disp([<span class="string">'The false positives for k = '</span>,num2str(k_vec(z)),<span class="string">' is '</span>,num2str( false_positives),<span class="string">'% out of 32 person'</span>])
+<span class="keyword">end</span>
+</pre><pre class="codeoutput">The false positives for k = 155 is 11% out of 32 person
+</pre><h2 id="3">Calculating false negatives for people present on the training set</h2><pre class="codeinput">people_notidentified = zeros(size(k_vec));
+<span class="keyword">for</span> z = 1:1
+    Vk=V_data(:,1:k_vec(1,z));
+    coeff = Vk'*Xbar;<span class="comment">%Coefficients of the training set</span>
+    false_negatives = 0;
+    mean_coeff = zeros(k_vec(z),32);
+    var_coeff = zeros(1,32);
+    <span class="keyword">for</span> i=1:32
+        mean_coeff(:,i) = sum(coeff(:,6*(i-1)+1:6*i),2)/6;
+        temp = zeros(k_vec(1,z),6);
+        temp = coeff(:,6*(i-1)+1:6*i) - mean_coeff(:,i);
+        var_coeff(i) = sum(sum(temp.*temp))/6;
+
+    <span class="keyword">end</span>
+    <span class="keyword">for</span> i=1:32
+        <span class="keyword">for</span> j =7:10
+            z_i =  reshape(im2double((imread(strcat(<span class="string">'../Data/Dataset/s'</span>,num2str(i),<span class="string">'/'</span>,num2str(j),<span class="string">'.pgm'</span>)))),[92*112,1]);
+            z_bar = z_i - mean_face;
+            coeff_z = Vk'*z_bar;<span class="comment">%Coefficient of the probe image</span>
+            not_identified = 0;
+
+<span class="comment">%             for k=1:32</span>
+            distance = sum((coeff_z-mean_coeff).*(coeff_z-mean_coeff));
+            [M,I]= min(distance);
+
+                <span class="keyword">if</span> M &gt; 1.5*var_coeff(I)
+                    not_identified=1;
+                <span class="keyword">end</span>
+
+            false_negatives = false_negatives+not_identified;
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+    people_notidentified(1,z) = false_negatives/128*100;
+    disp([<span class="string">'The false negatives for k = '</span>,num2str(k_vec(z)),<span class="string">' is '</span>,num2str( false_negatives),<span class="string">'% out of 128 person'</span> ])
+<span class="keyword">end</span>
+</pre><pre class="codeoutput">The false negatives for k = 155 is 15% out of 128 person
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+for i = 1:32 %Loading images
+    for j = 1:6
+    X(:,6*(i-1)+j) = reshape(im2double((imread(strcat('../Data/Dataset/s',num2str(i),'/',num2str(j),'.pgm')))),[92*112,1]);
+    end
+end
+
+mean_face = (sum(X,2)/192);%Mean face of the dataset
+Xbar = X - mean_face;
+L = Xbar'*Xbar;
+[V,D] = eig(L);
+[d,ind] = sort(diag(D),'descend');%Sorting eigen values in descending order
+D = D(ind,ind);
+V = V(:,ind);
+V= X*V;
+V_2 = V.*V;
+V_data=V./sqrt(sum(V_2));%Normalized eigen faces
+
+k_vec = [155];
+
+ % We calculate mean and variance of coefficients of each person in the 
+   %training set. During testing, we calculate the distance of probe 
+   %image in coefficient space with mean of every person in the training data. 
+   %The person is identified on the basis of closest distance to mean. If 
+   %the closest distance is more than 1.5*variance of this predicted identity 
+   %then we reject the image as not belonging to training dataset
+
+%% Calculating false positives for people not a part of the training set
+people_identified = zeros(size(k_vec));
+for z = 1:1
+    Vk=V_data(:,1:k_vec(1,z));
+    coeff = Vk'*Xbar;%Coefficients of the training set
+    false_positives = 0;
+    mean_coeff = zeros(k_vec(z),32);
+    var_coeff = zeros(1,32);
+    for i=1:32
+        mean_coeff(:,i) = sum(coeff(:,6*(i-1)+1:6*i),2)/6;
+        temp = zeros(k_vec(1,z),6);
+        temp = coeff(:,6*(i-1)+1:6*i) - mean_coeff(:,i);
+        var_coeff(i) = sum(sum(temp.*temp))/6;
+        
+    end
+    for i=33:40
+        for j =7:10
+            z_i =  reshape(im2double((imread(strcat('../Data/Dataset/s',num2str(i),'/',num2str(j),'.pgm')))),[92*112,1]);
+            z_bar = z_i - mean_face;
+            coeff_z = Vk'*z_bar;%Coefficient of the probe image
+            identified = 0;
+            distance = sum((coeff_z-mean_coeff).*(coeff_z-mean_coeff));
+            [M,I]= min(distance);
+            
+                if M < 1.5*var_coeff(I)
+                    identified=1;
+                end
+            
+            false_positives = false_positives+identified;
+        end
+    end
+    people_identified(1,z) = false_positives/32*100;
+    disp(['The false positives for k = ',num2str(k_vec(z)),' is ',num2str( false_positives),'% out of 32 person'])
+end
+%% Calculating false negatives for people present on the training set  
+people_notidentified = zeros(size(k_vec));
+for z = 1:1
+    Vk=V_data(:,1:k_vec(1,z));
+    coeff = Vk'*Xbar;%Coefficients of the training set
+    false_negatives = 0;
+    mean_coeff = zeros(k_vec(z),32);
+    var_coeff = zeros(1,32);
+    for i=1:32
+        mean_coeff(:,i) = sum(coeff(:,6*(i-1)+1:6*i),2)/6;
+        temp = zeros(k_vec(1,z),6);
+        temp = coeff(:,6*(i-1)+1:6*i) - mean_coeff(:,i);
+        var_coeff(i) = sum(sum(temp.*temp))/6;
+        
+    end
+    for i=1:32
+        for j =7:10
+            z_i =  reshape(im2double((imread(strcat('../Data/Dataset/s',num2str(i),'/',num2str(j),'.pgm')))),[92*112,1]);
+            z_bar = z_i - mean_face;
+            coeff_z = Vk'*z_bar;%Coefficient of the probe image
+            not_identified = 0;
+            
+%             for k=1:32
+            distance = sum((coeff_z-mean_coeff).*(coeff_z-mean_coeff));
+            [M,I]= min(distance);
+            
+                if M > 1.5*var_coeff(I)
+                    not_identified=1;
+                end
+            
+            false_negatives = false_negatives+not_identified;
+        end
+    end
+    people_notidentified(1,z) = false_negatives/128*100;
+    disp(['The false negatives for k = ',num2str(k_vec(z)),' is ',num2str( false_negatives),'% out of 128 person' ])
+end
+
+  
+##### SOURCE END #####
+--></body></html>
