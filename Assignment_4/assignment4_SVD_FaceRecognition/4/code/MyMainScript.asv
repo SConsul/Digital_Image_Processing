@@ -3,7 +3,7 @@ square = magic(9);
 [u s v] = MySVD(square);
 err_sq = square - u*s*v';
 err_sq = sum(sum(err_sq.*err_sq));
-
+disp('E
 tall = rand(12,9);
 [u s v] = MySVD(tall);
 err_tall = tall - u*s*v';
@@ -14,4 +14,4 @@ fat = rand(6,13);
 err_fat = fat - u*s*v';
 err_fat = sum(sum(err_fat.*err_fat));
 
-%as seen, all variants of input matrix A result in small errors (Frobeniusin 
+%as seen, all variants of input matrix A result in small errors (Frobenius norm of difference) betwwen original and recontructied imagesin 

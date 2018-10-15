@@ -2,16 +2,16 @@
 square = magic(9);
 [u s v] = MySVD(square);
 err_sq = square - u*s*v';
-err_sq = sum(sum(err_sq.*err_sq));
+err_sq = sum(sum(err_sq.*err_sq))
 
 tall = rand(12,9);
 [u s v] = MySVD(tall);
 err_tall = tall - u*s*v';
-err_tall = sum(sum(err_tall.*err_tall));
+err_tall = sum(sum(err_tall.*err_tall))
 
 fat = rand(6,13);
 [u s v] = MySVD(fat);
 err_fat = fat - u*s*v';
-err_fat = sum(sum(err_fat.x`*err_fat));
+err_fat = sum(sum(err_fat.*err_fat))
 
 %as seen, all variants of input matrix A result in small errors (Frobenius norm of difference) betwwen original and recontructied imagesin 
