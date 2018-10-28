@@ -10,7 +10,9 @@ FT_plot = log(1 + abs(FT));
 figure;
 imshow(FT_plot, [min(min(FT_plot)), max(max(FT_plot))]); colormap jet ; 
 title('Log Fourier Transform of original image', 'Fontsize', 12, 'Fontname', 'Cambria');
-
+% The input is a barbara image with (top-right to bottom left) diagonal lines of noise added. This
+% implies that the noise adds points to the FFT such that they would be
+% symmetric to the main (top-right to bottom left) diagonal line. 
 % Interference frequencies at (u,v) = (-5,10) and (5,-10)
 notch_filter = ones(size(img));
 notch_filter(119-3: 119+3,124-3:124+3) = 0;
