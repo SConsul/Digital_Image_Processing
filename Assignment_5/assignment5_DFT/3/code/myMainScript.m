@@ -22,11 +22,11 @@ notch_filter(139-3:139+3,134-3:134+3) = 0;
 filteredFT = FT.*notch_filter;
 filteredFT_plot = log(1+abs(filteredFT));
 
-figure;
-imagesc(notch_filter, [min(min(notch_filter)), max(max(notch_filter))]); colormap jet ; colorbar;
+% figure;
+% imagesc(notch_filter, [min(min(notch_filter)), max(max(notch_filter))]); colormap jet ; colorbar;
 
 figure;
-imagesc(filteredFT_plot, [min(min(filteredFT_plot)), max(max(filteredFT_plot))]); colormap jet ; colorbar;
+imagesc(filteredFT_plot, [min(min(filteredFT_plot)), max(max(filteredFT_plot))]); colormap gray ; colorbar;
 title('Log Fourier Transform of filtered image', 'Fontsize', 12, 'Fontname', 'Cambria');
 filteredimage = ifft2(ifftshift(filteredFT));
 figure;
