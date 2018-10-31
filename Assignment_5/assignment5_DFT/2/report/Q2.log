@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6500 64-bit) (preloaded format=pdflatex 2018.1.21)  31 OCT 2018 13:20
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6500 64-bit) (preloaded format=pdflatex 2018.1.21)  31 OCT 2018 22:37
 entering extended mode
 **./Q2.tex
 (Q2.tex
@@ -470,7 +470,7 @@ Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
 Package geometry Warning: Over-specification in `h'-direction.
     `width' (483.69684pt) is ignored.
 
-No file Q2.aux.
+(Q2.aux)
 \openout1 = `Q2.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 19.
@@ -485,6 +485,7 @@ LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 19.
 LaTeX Font Info:    ... okay on input line 19.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 19.
 LaTeX Font Info:    ... okay on input line 19.
+
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
 *geometry* verbose mode - [ preamble ] result:
@@ -546,13 +547,13 @@ Underfull \hbox (badness 10000) in paragraph at lines 34--35
 
 {C:/Users/Admin/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}] (Q2.aux) ) 
 Here is how much of TeX's memory you used:
- 2199 strings out of 493312
- 26173 string characters out of 3138899
+ 2201 strings out of 493312
+ 26307 string characters out of 3138899
  91058 words of memory out of 3000000
  5714 multiletter control sequences out of 15000+200000
  16798 words of font info for 65 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 27i,12n,28p,711b,210s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 27i,12n,28p,735b,210s stack positions out of 5000i,500n,10000p,200000b,50000s
 <
 C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Progr
 am Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Program Files
@@ -565,7 +566,7 @@ cmr17.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr7.pfb>
 <C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Prog
 ram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Program Files
 /MiKTeX 2.9/fonts/type1/public/rsfs/rsfs10.pfb>
-Output written on Q2.pdf (1 page, 123158 bytes).
+Output written on Q2.pdf (1 page, 123155 bytes).
 PDF statistics:
  54 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)

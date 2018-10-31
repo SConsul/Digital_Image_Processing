@@ -3,7 +3,7 @@ close all
 clear all
 clc
 
-im = double(imread('../data/barbara256.png'));
+im = double(imread('../data/barbara256-part.png'));
 
 %%  adding gaussian noise
 sigma = 20;
@@ -39,6 +39,23 @@ disp(rmse);
 figure;
 imshowpair(im1_gaussian/255, im2_c/255, 'montage');
 title('Noisy image and Denoised Image (Part C)', 'Fontsize', 12, 'Fontname', 'Cambria'); 
+%%
+
+% As demonstrated above, Bilateral Filtering is not as effective in denoising
+% the image compared to PCA. PCA is able to remove noise significantly,
+% while bilateral filtering fails to restore the image without
+% over-smoothening the image (by tuning the parameters). 
+%
+% Bilateral Filtering is not a denoising technique but an enhancement
+% technique. 
+%
+%It is not as effective as PCA in denoising an image as:
+%
+% (i) bilateral Filtering does not take the noise statistics into account
+%
+% (2)bilateral filtering looks at pixel-level dissimilarity. PCA, however,
+% finds similar patches and so is able to capture local texture
+% infromation.
 %% Part (D)
 
 % Image Acquisition with a sufficient exposure time
@@ -63,4 +80,10 @@ figure;
 imshowpair(im1_poisson_le/255.0, im2_poisson_le/255.0, 'montage');
 title('Noisy and Denoised Image with low exposure', 'Fontsize', 12, 'Fontname', 'Cambria');
 
+% In the low exposure image the Signal-to-Noise Ratio (mean of orignal image/standard deviation of noise) is 1/sqrt(20) of the
+% previous image. 
+%
+% This makes denoising ineffective as the information of the original source image 
+% is perturebed to such an extent that PCA is unable to distinguish between noise and
+% true signal when extracting common features (eigen vectors of correlation matrix) in similar patches.
 toc;

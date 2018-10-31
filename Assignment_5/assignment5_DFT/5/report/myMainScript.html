@@ -1,0 +1,254 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>myMainScript</title><meta name="generator" content="MATLAB 9.2"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-10-31"><meta name="DC.source" content="myMainScript.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">MyMainScript</a></li><li><a href="#2">adding gaussian noise</a></li><li><a href="#3">Part (A)</a></li><li><a href="#4">Part (B)</a></li><li><a href="#5">Part (C)</a></li><li><a href="#7">Part (D)</a></li></ul></div><h2 id="1">MyMainScript</h2><pre class="codeinput">close <span class="string">all</span>
+clear <span class="string">all</span>
+clc
+
+im = double(imread(<span class="string">'../data/barbara256-part.png'</span>));
+</pre><h2 id="2">adding gaussian noise</h2><pre class="codeinput">sigma = 20;
+im1_gaussian = im+randn(size(im)).*sigma;
+</pre><h2 id="3">Part (A)</h2><pre class="codeinput">tic;
+im2_a = myPCADenoising1(im1_gaussian,[7 7],sigma);
+rmse = norm((im2_a-im),<span class="string">'fro'</span>)/norm(im,<span class="string">'fro'</span>);
+disp(<span class="string">'RMSE in Part A:'</span>);
+disp(rmse);
+figure;
+imshow(im/255);
+title(<span class="string">'Original image'</span>, <span class="string">'Fontsize'</span>, 12, <span class="string">'Fontname'</span>, <span class="string">'Cambria'</span>);
+figure;
+imshowpair(im1_gaussian/255, im2_a/255, <span class="string">'montage'</span>);
+title(<span class="string">'Noisy image and Denoised Image using all patches'</span>, <span class="string">'Fontsize'</span>, 12, <span class="string">'Fontname'</span>, <span class="string">'Cambria'</span>);
+</pre><pre class="codeoutput">RMSE in Part A:
+    0.0632
+
+</pre><img vspace="5" hspace="5" src="myMainScript_01.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_02.png" alt=""> <h2 id="4">Part (B)</h2><pre class="codeinput">im2_b = myPCADenoising2(im1_gaussian,[7 7], [31,31], sigma, 200);
+rmse = norm((im2_b-im),<span class="string">'fro'</span>)/norm(im,<span class="string">'fro'</span>);
+disp(<span class="string">'RMSE in Part B:'</span>);
+disp(rmse);
+figure;
+imshowpair(im1_gaussian/255, im2_b/255, <span class="string">'montage'</span>);
+title(<span class="string">'Noisy image and Denoised Image using 200 most similar patches'</span>, <span class="string">'Fontsize'</span>, 12, <span class="string">'Fontname'</span>, <span class="string">'Cambria'</span>);
+</pre><pre class="codeoutput">RMSE in Part B:
+    0.0775
+
+</pre><img vspace="5" hspace="5" src="myMainScript_03.png" alt=""> <h2 id="5">Part (C)</h2><pre class="codeinput">im2_c = myBilateralFiltering(im1_gaussian,5,sigma);
+rmse = norm((im2_c-im),<span class="string">'fro'</span>)/norm(im,<span class="string">'fro'</span>);
+disp(<span class="string">'RMSE using Bilateral Filtering is:'</span>);
+disp(rmse);
+figure;
+imshowpair(im1_gaussian/255, im2_c/255, <span class="string">'montage'</span>);
+title(<span class="string">'Noisy image and Denoised Image (Part C)'</span>, <span class="string">'Fontsize'</span>, 12, <span class="string">'Fontname'</span>, <span class="string">'Cambria'</span>);
+</pre><pre class="codeoutput">RMSE using Bilateral Filtering is:
+    0.0969
+
+</pre><img vspace="5" hspace="5" src="myMainScript_04.png" alt=""> <pre class="codeinput"><span class="comment">% As demonstrated above, Bilateral Filtering is not as effective in denoising</span>
+<span class="comment">% the image compared to PCA. PCA is able to remove noise significantly,</span>
+<span class="comment">% while bilateral filtering fails to restore the image without</span>
+<span class="comment">% over-smoothening the image (by tuning the parameters).</span>
+<span class="comment">%</span>
+<span class="comment">% Bilateral Filtering is not a denoising technique but an enhancement</span>
+<span class="comment">% technique.</span>
+<span class="comment">%</span>
+<span class="comment">%It is not as effective as PCA in denoising an image as:</span>
+<span class="comment">%</span>
+<span class="comment">% (i) bilateral Filtering does not take the noise statistics into account</span>
+<span class="comment">%</span>
+<span class="comment">% (2)bilateral filtering looks at pixel-level dissimilarity. PCA, however,</span>
+<span class="comment">% finds similar patches and so is able to capture local texture</span>
+<span class="comment">% infromation.</span>
+</pre><h2 id="7">Part (D)</h2><pre class="codeinput"><span class="comment">% Image Acquisition with a sufficient exposure time</span>
+im1_poisson = poissrnd(im);
+im2_poisson = myPCADenoising2(sqrt(im1_poisson), [7,7], [31 31], 0.25, 200);
+im2_poisson = im2_poisson.^2;
+rmse = norm((im2_poisson-im1_poisson),<span class="string">'fro'</span>)/norm(im,<span class="string">'fro'</span>);
+disp(<span class="string">'RMSE for sufficient exposure time is:'</span>);
+disp(rmse);
+figure;
+imshowpair(im1_poisson/255.0, im2_poisson/255.0, <span class="string">'montage'</span>);
+title(<span class="string">'Noisy and Denoised Image with sufficient exposure time'</span>, <span class="string">'Fontsize'</span>, 12, <span class="string">'Fontname'</span>, <span class="string">'Cambria'</span>);
+
+<span class="comment">% Image Acquisition with a lower exposure time</span>
+im1_poisson_le = poissrnd(im/20);
+im2_poisson_le = myPCADenoising2(sqrt(im1_poisson_le), [7,7], [31 31], 0.25, 200);
+im2_poisson_le = im2_poisson_le.^2;
+rmse = norm((im2_poisson_le-im1_poisson),<span class="string">'fro'</span>)/norm(im,<span class="string">'fro'</span>);
+disp(<span class="string">'RMSE for low exposure time is:'</span>);
+disp(rmse);
+figure;
+imshowpair(im1_poisson_le/255.0, im2_poisson_le/255.0, <span class="string">'montage'</span>);
+title(<span class="string">'Noisy and Denoised Image with low exposure'</span>, <span class="string">'Fontsize'</span>, 12, <span class="string">'Fontname'</span>, <span class="string">'Cambria'</span>);
+
+<span class="comment">% In the low exposure image the Signal-to-Noise Ratio (mean of orignal image/standard deviation of noise) is 1/sqrt(20) of the</span>
+<span class="comment">% previous image.</span>
+<span class="comment">%</span>
+<span class="comment">% This makes denoising ineffective as the information of the original source image</span>
+<span class="comment">% is perturebed to such an extent that PCA is unable to distinguish between noise and</span>
+<span class="comment">% true signal when extracting common features (eigen vectors of correlation matrix) in similar patches.</span>
+toc;
+</pre><pre class="codeoutput">RMSE for sufficient exposure time is:
+    0.0302
+
+RMSE for low exposure time is:
+    0.9543
+
+Elapsed time is 93.592689 seconds.
+</pre><img vspace="5" hspace="5" src="myMainScript_05.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_06.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% MyMainScript
+close all
+clear all
+clc
+
+im = double(imread('../data/barbara256-part.png'));
+
+%%  adding gaussian noise
+sigma = 20;
+im1_gaussian = im+randn(size(im)).*sigma;
+
+%% Part (A)
+tic;
+im2_a = myPCADenoising1(im1_gaussian,[7 7],sigma);
+rmse = norm((im2_a-im),'fro')/norm(im,'fro');
+disp('RMSE in Part A:');
+disp(rmse);
+figure;
+imshow(im/255);
+title('Original image', 'Fontsize', 12, 'Fontname', 'Cambria'); 
+figure;
+imshowpair(im1_gaussian/255, im2_a/255, 'montage');
+title('Noisy image and Denoised Image using all patches', 'Fontsize', 12, 'Fontname', 'Cambria'); 
+
+%% Part (B)
+im2_b = myPCADenoising2(im1_gaussian,[7 7], [31,31], sigma, 200);
+rmse = norm((im2_b-im),'fro')/norm(im,'fro');
+disp('RMSE in Part B:');
+disp(rmse);
+figure;
+imshowpair(im1_gaussian/255, im2_b/255, 'montage');
+title('Noisy image and Denoised Image using 200 most similar patches', 'Fontsize', 12, 'Fontname', 'Cambria'); 
+
+%% Part (C)
+im2_c = myBilateralFiltering(im1_gaussian,5,sigma);
+rmse = norm((im2_c-im),'fro')/norm(im,'fro');
+disp('RMSE using Bilateral Filtering is:');
+disp(rmse);
+figure;
+imshowpair(im1_gaussian/255, im2_c/255, 'montage');
+title('Noisy image and Denoised Image (Part C)', 'Fontsize', 12, 'Fontname', 'Cambria'); 
+%%
+
+% As demonstrated above, Bilateral Filtering is not as effective in denoising
+% the image compared to PCA. PCA is able to remove noise significantly,
+% while bilateral filtering fails to restore the image without
+% over-smoothening the image (by tuning the parameters). 
+%
+% Bilateral Filtering is not a denoising technique but an enhancement
+% technique. 
+%
+%It is not as effective as PCA in denoising an image as:
+%
+% (i) bilateral Filtering does not take the noise statistics into account
+%
+% (2)bilateral filtering looks at pixel-level dissimilarity. PCA, however,
+% finds similar patches and so is able to capture local texture
+% infromation.
+%% Part (D)
+
+% Image Acquisition with a sufficient exposure time
+im1_poisson = poissrnd(im);
+im2_poisson = myPCADenoising2(sqrt(im1_poisson), [7,7], [31 31], 0.25, 200);
+im2_poisson = im2_poisson.^2;
+rmse = norm((im2_poisson-im1_poisson),'fro')/norm(im,'fro');
+disp('RMSE for sufficient exposure time is:');
+disp(rmse);
+figure;
+imshowpair(im1_poisson/255.0, im2_poisson/255.0, 'montage');
+title('Noisy and Denoised Image with sufficient exposure time', 'Fontsize', 12, 'Fontname', 'Cambria');
+
+% Image Acquisition with a lower exposure time
+im1_poisson_le = poissrnd(im/20);
+im2_poisson_le = myPCADenoising2(sqrt(im1_poisson_le), [7,7], [31 31], 0.25, 200);
+im2_poisson_le = im2_poisson_le.^2;
+rmse = norm((im2_poisson_le-im1_poisson),'fro')/norm(im,'fro');
+disp('RMSE for low exposure time is:');
+disp(rmse);
+figure; 
+imshowpair(im1_poisson_le/255.0, im2_poisson_le/255.0, 'montage');
+title('Noisy and Denoised Image with low exposure', 'Fontsize', 12, 'Fontname', 'Cambria');
+
+% In the low exposure image the Signal-to-Noise Ratio (mean of orignal image/standard deviation of noise) is 1/sqrt(20) of the
+% previous image. 
+%
+% This makes denoising ineffective as the information of the original source image 
+% is perturebed to such an extent that PCA is unable to distinguish between noise and
+% true signal when extracting common features (eigen vectors of correlation matrix) in similar patches.
+toc;
+
+##### SOURCE END #####
+--></body></html>
