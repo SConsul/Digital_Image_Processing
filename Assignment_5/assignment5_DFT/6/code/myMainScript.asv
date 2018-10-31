@@ -54,17 +54,10 @@ imagesc(CP_noisy_FT, [min(min(CP_noisy_FT)), max(max(CP_noisy_FT))]); colormap(g
 title('Fourier Transform of Noisy Cross Power Spectrum', 'Fontsize', 12, 'Fontname', 'Cambria');
 
 % CP = exp{j2pi(ux_o + vy_o) and so the FT of CP would be a delta centred at (x_o, y_o)
-% When ther is no noise added
-% The FT of CP is a black image with a solitary white point at [X Y] = [271 71].
-% This corresponds to a x_o = 270 and y_o = 70 (the difference of 1 arising due to MATLAB's indexing from 1)
-% This corresponds to a shift of 270(or equivalenty -30, as image is considered to be periodic when Fourier transformation is applied)
-% in the x direction and 70 in the y direction. 
+% disp is a black image with a solitary white point at [X Y] = [271 71].
+% This corresponds to a x_shift of -31 in the x direction and -231==69 in the
+% y direction. 
 
-% When there is noise, there is alot of noise in the Fourier transform of
-% CP and so it is hard to identify the delta (ie a single pixel). The delta
-% at [X Y] = [271 71] is faintly visible and is still the location ofmax
-% value in the FT, but this is no longer true when noise levels are
-% increased.
 
 %% Time Complexity Analysis
 % Time Complexity using FFT-based image registration: O(NlogN + N^2) =

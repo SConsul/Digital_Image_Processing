@@ -1,0 +1,212 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>myMainScript</title><meta name="generator" content="MATLAB 9.2"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-10-31"><meta name="DC.source" content="myMainScript.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">MyMainScript</a></li><li><a href="#3">Repeat with Noise added to images</a></li><li><a href="#4">Time Complexity Analysis</a></li></ul></div><h2 id="1">MyMainScript</h2><pre class="codeinput">close <span class="string">all</span>
+clear <span class="string">all</span>
+clc
+tic;
+</pre><pre class="codeinput">I = zeros(300,300);
+I(50:50+69, 50:50+49) = 255;
+<span class="comment">% Image J is a shifted version of I. Shift = (x_o, y_o)</span>
+J = zeros(300,300);
+J( 120:120+69, 20:20+49)=255;
+
+
+<span class="comment">% Calculating the Fourier Transforms of the images O(NlogN)</span>
+FT_I = fftshift(fft2(I));
+FT_J = fftshift(fft2(J));
+
+<span class="comment">% Calculating the Cross Power Spectrum O(N^2)</span>
+CP = (FT_I.*conj(FT_J))./(1e-5 + abs(FT_I).*abs(FT_J));
+<span class="comment">% Finding the FT of the Cross Power Spectrum O(NlogN)</span>
+CP_FT = real(fft2(CP));
+</pre><h2 id="3">Repeat with Noise added to images</h2><pre class="codeinput">noisy_I = I + 20*randn(300);
+
+<span class="comment">% Image J is a shifted version of I. Shift = (x_o, y_o)</span>
+noisy_J = J + 20*randn(300);
+
+<span class="comment">% Calculating the Fourier Transforms of the images O(NlogN)</span>
+FT_I_noisy = fftshift(fft2(noisy_I));
+FT_J_noisy = fftshift(fft2(noisy_J));
+
+<span class="comment">% Calculating the Cross Power Spectrum O(N^2)</span>
+CP_noisy = (FT_I_noisy.*conj(FT_J_noisy))./(1e-5 + abs(FT_I_noisy).*abs(FT_J_noisy));
+
+<span class="comment">% Finding the FT of the Cross Power Spectrum O(NlogN)</span>
+CP_noisy_FT = real(fft2(CP_noisy));
+
+<span class="comment">%Display results</span>
+figure;
+imshowpair(I,J);
+title(<span class="string">'Images I and J'</span>, <span class="string">'Fontsize'</span>, 12, <span class="string">'Fontname'</span>, <span class="string">'Cambria'</span>);
+
+figure;
+imshowpair(noisy_I,noisy_J);
+title(<span class="string">'Noisy Images I and J'</span>, <span class="string">'Fontsize'</span>, 12, <span class="string">'Fontname'</span>, <span class="string">'Cambria'</span>);
+
+figure;
+imagesc(CP_FT, [min(min(CP_FT)), max(max(CP_FT))]); colormap(gray); colorbar;
+title(<span class="string">'Fourier Transform of Cross Power Spectrum'</span>, <span class="string">'Fontsize'</span>, 12, <span class="string">'Fontname'</span>, <span class="string">'Cambria'</span>);
+figure;
+imagesc(CP_noisy_FT, [min(min(CP_noisy_FT)), max(max(CP_noisy_FT))]); colormap(gray); colorbar;
+title(<span class="string">'Fourier Transform of Noisy Cross Power Spectrum'</span>, <span class="string">'Fontsize'</span>, 12, <span class="string">'Fontname'</span>, <span class="string">'Cambria'</span>);
+
+<span class="comment">% CP = exp{j2pi(ux_o + vy_o) and so the FT of CP would be a delta centred at (x_o, y_o)</span>
+<span class="comment">% When ther is no noise added</span>
+<span class="comment">% The FT of CP is a black image with a solitary white point at [X Y] = [271 71].</span>
+<span class="comment">% This corresponds to a x_o = 270 and y_o = 70 (the difference of 1 arising due to MATLAB's indexing from 1)</span>
+<span class="comment">% This corresponds to a shift of 270(or equivalenty -30, as image is considered to be periodic when Fourier transformation is applied)</span>
+<span class="comment">% in the x direction and 70 in the y direction.</span>
+
+<span class="comment">% When there is noise, there is alot of noise in the Fourier transform of</span>
+<span class="comment">% CP and so it is hard to identify the delta (ie a single pixel). The delta</span>
+<span class="comment">% at [X Y] = [271 71] is faintly visible and is still the location ofmax</span>
+<span class="comment">% value in the FT, but this is no longer true when noise levels are</span>
+<span class="comment">% increased.</span>
+</pre><img vspace="5" hspace="5" src="myMainScript_01.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_02.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_03.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_04.png" alt=""> <h2 id="4">Time Complexity Analysis</h2><p>Time Complexity using FFT-based image registration: O(NlogN + N^2) = O(N^2)</p><p>Time Complexity using pixel wise comparison for image registration: O(N^4) (because every pixel of the first image has to be compared to every pixel of the second image)</p><pre class="codeinput">toc;
+</pre><pre class="codeoutput">Elapsed time is 3.709487 seconds.
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% MyMainScript
+close all
+clear all
+clc
+tic;
+%% 
+I = zeros(300,300);
+I(50:50+69, 50:50+49) = 255;
+% Image J is a shifted version of I. Shift = (x_o, y_o)
+J = zeros(300,300);
+J( 120:120+69, 20:20+49)=255;
+
+
+% Calculating the Fourier Transforms of the images O(NlogN)
+FT_I = fftshift(fft2(I));
+FT_J = fftshift(fft2(J));
+
+% Calculating the Cross Power Spectrum O(N^2)
+CP = (FT_I.*conj(FT_J))./(1e-5 + abs(FT_I).*abs(FT_J));
+% Finding the FT of the Cross Power Spectrum O(NlogN)
+CP_FT = real(fft2(CP));
+
+%% Repeat with Noise added to images
+
+noisy_I = I + 20*randn(300);
+
+% Image J is a shifted version of I. Shift = (x_o, y_o)
+noisy_J = J + 20*randn(300);
+
+% Calculating the Fourier Transforms of the images O(NlogN)
+FT_I_noisy = fftshift(fft2(noisy_I));
+FT_J_noisy = fftshift(fft2(noisy_J));
+
+% Calculating the Cross Power Spectrum O(N^2)
+CP_noisy = (FT_I_noisy.*conj(FT_J_noisy))./(1e-5 + abs(FT_I_noisy).*abs(FT_J_noisy));
+
+% Finding the FT of the Cross Power Spectrum O(NlogN)
+CP_noisy_FT = real(fft2(CP_noisy));
+
+%Display results
+figure;
+imshowpair(I,J);
+title('Images I and J', 'Fontsize', 12, 'Fontname', 'Cambria');
+
+figure;
+imshowpair(noisy_I,noisy_J);
+title('Noisy Images I and J', 'Fontsize', 12, 'Fontname', 'Cambria');
+
+figure;
+imagesc(CP_FT, [min(min(CP_FT)), max(max(CP_FT))]); colormap(gray); colorbar;
+title('Fourier Transform of Cross Power Spectrum', 'Fontsize', 12, 'Fontname', 'Cambria');
+figure;
+imagesc(CP_noisy_FT, [min(min(CP_noisy_FT)), max(max(CP_noisy_FT))]); colormap(gray); colorbar;
+title('Fourier Transform of Noisy Cross Power Spectrum', 'Fontsize', 12, 'Fontname', 'Cambria');
+
+% CP = exp{j2pi(ux_o + vy_o) and so the FT of CP would be a delta centred at (x_o, y_o)
+% When ther is no noise added
+% The FT of CP is a black image with a solitary white point at [X Y] = [271 71].
+% This corresponds to a x_o = 270 and y_o = 70 (the difference of 1 arising due to MATLAB's indexing from 1)
+% This corresponds to a shift of 270(or equivalenty -30, as image is considered to be periodic when Fourier transformation is applied)
+% in the x direction and 70 in the y direction. 
+
+% When there is noise, there is alot of noise in the Fourier transform of
+% CP and so it is hard to identify the delta (ie a single pixel). The delta
+% at [X Y] = [271 71] is faintly visible and is still the location ofmax
+% value in the FT, but this is no longer true when noise levels are
+% increased.
+
+%% Time Complexity Analysis
+% Time Complexity using FFT-based image registration: O(NlogN + N^2) =
+% O(N^2)
+%
+% Time Complexity using pixel wise comparison for image registration:
+% O(N^4) (because every pixel of the first image has to be compared to every pixel of the second image) 
+toc;
+
+##### SOURCE END #####
+--></body></html>
