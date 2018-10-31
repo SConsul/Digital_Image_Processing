@@ -1,0 +1,44 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{bm}
+\usepackage{relsize}
+\usepackage{amsmath,amssymb,amsthm, mathrsfs}
+\usepackage{geometry}
+\title{CS 663 Assignment 5}
+\author{Sarthak Consul - 16D100012\\
+Parthasarathi Khirwadkar - 16D070001\\
+Bhishma Dedhia - 16D170005}
+\date{}
+\geometry{
+    a4paper,
+    total={170mm,257mm},
+    left=12mm, 
+    right=12mm, 
+    top=20mm,
+    }
+\begin{document}
+
+\maketitle
+\centerline{\textbf{\large\large{{{QUESTION 2}}}}}
+\textbf{For 1D Image}\\
+If the periodic boundary conditions were applied. i.e. $f[n+i] = f[0+i] \hspace{8pt}\forall i<N-1$
+. 
+\begin{align*}
+    g = h*f \longleftrightarrow G = HF\\
+    \text{For known g,h (and so G,H), }f = \mathscr{F}^{-1}\bigg(\frac{G}{H}\bigg)
+\end{align*}
+So if H(u) = 0 for any $0\leq u \leq N-1$, all information of F(u) is lost by the convolution action of h. The impulse response of the derivative filter is of the form [-1 1]  and so H(u) = $1 - e^{-2\pi u/N }$ . This means that information is lost about F(u=0), i.e. the DC component of the image. 
+
+However if it is assumed that the image was zero padded before applying the gradient kernel it is possible to recover the DC component. In the case of zero padding the gradient at the edge of the row will be the value of the element itself since its neighbour is zero. Through g[n] we know the value of the difference in adjacent neighbors. Hence we will be able to construct back the original image. This is intuitive as given a differential equation and an initial condition we can find the exact solution to the system.\\
+
+\textbf{For 2D Image}\\
+\begin{align*}
+    g_x = h_x*f \longleftrightarrow G_x = H_x F \hspace{15pt} f = \mathscr{F}^{-1}\bigg(\frac{G_x}{H_x}\bigg)\\
+    g_y = h_y*f \longleftrightarrow G_y = H_y F \hspace{15pt} f = \mathscr{F}^{-1}\bigg(\frac{G_y}{H_y}\bigg)
+\end{align*}
+
+In the case of 2D images while taking the gradient along x direction, the action of convolution will cause the loss of information at U= 0 since the value of H(u) =  $1 - e^{-2\pi u/N }$ .will be zero. Hence we will lose information along the V axis. Similarly calculating the gradient along y direction will cause a loss of information along the U axis. However the actual loss of information will be along the intersection of the above i.e. (U=0) $\cap$ (V=0). That means we will be able to recover the value of every point in F(u,v) except the point (U=0,V=0) as H\textsubscript{x}(u) as well as H\textsubscript{y}(v) are zero for that point. Hence DC component of the image is lost.
+
+However if we assume that the image was zero padded before the operation , we have a knowledge of the initial condition and we will be able to entirely reconstruct the image using the arguments stated for the 1D image case.
+
+\end{document}

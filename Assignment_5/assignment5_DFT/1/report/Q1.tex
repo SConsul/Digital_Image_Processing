@@ -1,0 +1,36 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{bm}
+\usepackage{relsize}
+\usepackage{amsmath,amssymb,amsthm, mathrsfs}
+\usepackage{geometry}
+\title{CS 663 Assignment 5}
+\author{Sarthak Consul - 16D100012\\
+Parthasarathi Khirwadkar - 16D070001\\
+Bhishma Dedhia - 16D170005}
+\date{}
+\geometry{
+    a4paper,
+    total={170mm,257mm},
+    left=12mm, 
+    right=12mm, 
+    top=20mm,
+    }
+\begin{document}
+
+\maketitle
+
+\centerline{\textbf{\large\large{{{QUESTION 1}}}}}
+\begin{align*}
+    g_1 = f_1 + h_2*f_2 &\longleftrightarrow G_1 = F_1 + H_2F_2\\
+    g_2 = f_2 + h_1*f_1 &\longleftrightarrow G_2 = F_2 + H_1F_1\\
+    G_1 &= F_1 + H_2(G_2 - H_1F_1)\\
+    G_1 &= (1-H_1H_2)F_1 + H_2G_2\\
+    F_1 &= \frac{G_1 - H_2G_2}{1 - H_1H_2}\\
+    F_2 &= \frac{G_2 - H_1G_1}{1 - H_1H_2}
+\end{align*}
+This formula will be a problem when \textbf{H1H2 = 1}. In other words whenever the product of the respective blurring kernels are near unity, then the estimated images \textbf{F1} and \textbf{F2} will blow up for the particular frequency in the Fourier domain. This will give us extremely inaccurate images on taking the inverse Fourier transform.
+
+As this instability (ie. \textbf{H1H2 = 1}) can occur at arbitrary frequencies, there is no simple way (eg. a low pass filter like in Wiener filters) of negating the effects of these unstable points. 
+
+\end{document}

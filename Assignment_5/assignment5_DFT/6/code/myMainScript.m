@@ -31,7 +31,7 @@ noisy_J = J + 20*randn(300);
 FT_I_noisy = fftshift(fft2(noisy_I));
 FT_J_noisy = fftshift(fft2(noisy_J));
 
-% Calculating the Cross Power Spectrum O(N^2)
+% Calculating the Cross Power Spectrum O(N)
 CP_noisy = (FT_I_noisy.*conj(FT_J_noisy))./(1e-5 + abs(FT_I_noisy).*abs(FT_J_noisy));
 
 % Finding the FT of the Cross Power Spectrum O(NlogN)
@@ -52,14 +52,14 @@ title('Fourier Transform of Cross Power Spectrum', 'Fontsize', 12, 'Fontname', '
 figure;
 imagesc(CP_noisy_FT, [min(min(CP_noisy_FT)), max(max(CP_noisy_FT))]); colormap(gray); colorbar;
 title('Fourier Transform of Noisy Cross Power Spectrum', 'Fontsize', 12, 'Fontname', 'Cambria');
-
+%%
 % CP = exp{j2pi(ux_o + vy_o) and so the FT of CP would be a delta centred at (x_o, y_o)
-% When ther is no noise added
-% The FT of CP is a black image with a solitary white point at [X Y] = [271 71].
+%
+% When there is no noise added, the FT of CP is a black image with a solitary white point at [X Y] = [271 71].
 % This corresponds to a x_o = 270 and y_o = 70 (the difference of 1 arising due to MATLAB's indexing from 1)
 % This corresponds to a shift of 270(or equivalenty -30, as image is considered to be periodic when Fourier transformation is applied)
 % in the x direction and 70 in the y direction. 
-
+%
 % When there is noise, there is alot of noise in the Fourier transform of
 % CP and so it is hard to identify the delta (ie a single pixel). The delta
 % at [X Y] = [271 71] is faintly visible and is still the location ofmax
@@ -67,9 +67,10 @@ title('Fourier Transform of Noisy Cross Power Spectrum', 'Fontsize', 12, 'Fontna
 % increased.
 
 %% Time Complexity Analysis
-% Time Complexity using FFT-based image registration: O(NlogN + N^2) =
-% O(N^2)
+% N = number of pixels in image
+% Time Complexity using FFT-based image registration: O(NlogN + N) =
+% O(NlogN)
 %
 % Time Complexity using pixel wise comparison for image registration:
-% O(N^4) (because every pixel of the first image has to be compared to every pixel of the second image) 
+% O(N^2) (because every pixel of the first image has to be compared to every pixel of the second image) 
 toc;

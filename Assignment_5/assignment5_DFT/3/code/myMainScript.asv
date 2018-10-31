@@ -14,9 +14,8 @@ FT_plot = log(1 + abs(FT));
 % The input is a barbara image with (top-right to bottom left) diagonal lines of noise added. This
 % implies that the noise adds points to the FFT such that they would be
 % symmetric to the main (top-right to bottom left) diagonal line. 
-% Interference frequencies at (u,v) = (-10,-5) and (10,5). Due to fftshift
-% that corresponds to (119,124) and(139, 134)
-
+% Interference frequencies at (u,v) = (-5,10) and (5,-10). Due to fftshift
+% that corresponds to (129+-5, 129+-5) 
 notch_filter = ones(size(img));
 notch_filter(119-3: 119+3,124-3:124+3) = 0;
 notch_filter(139-3:139+3,134-3:134+3) = 0;

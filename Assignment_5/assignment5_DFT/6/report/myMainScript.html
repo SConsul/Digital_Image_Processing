@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>myMainScript</title><meta name="generator" content="MATLAB 9.2"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-10-28"><meta name="DC.source" content="myMainScript.m"><style type="text/css">
+      --><title>myMainScript</title><meta name="generator" content="MATLAB 9.2"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-10-31"><meta name="DC.source" content="myMainScript.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,7 +66,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">MyMainScript</a></li><li><a href="#3">Time Complexity Analysis</a></li></ul></div><h2 id="1">MyMainScript</h2><pre class="codeinput">close <span class="string">all</span>
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">MyMainScript</a></li><li><a href="#3">Repeat with Noise added to images</a></li><li><a href="#5">Time Complexity Analysis</a></li></ul></div><h2 id="1">MyMainScript</h2><pre class="codeinput">close <span class="string">all</span>
 clear <span class="string">all</span>
 clc
 tic;
@@ -76,19 +76,16 @@ I(50:50+69, 50:50+49) = 255;
 J = zeros(300,300);
 J( 120:120+69, 20:20+49)=255;
 
+
 <span class="comment">% Calculating the Fourier Transforms of the images O(NlogN)</span>
 FT_I = fftshift(fft2(I));
 FT_J = fftshift(fft2(J));
 
 <span class="comment">% Calculating the Cross Power Spectrum O(N^2)</span>
 CP = (FT_I.*conj(FT_J))./(1e-5 + abs(FT_I).*abs(FT_J));
-CP_FT_plot = log(1+abs(fftshift(fft2(CP))));
-
-<span class="comment">% Finding the IFT of the Cross Power Spectrum O(NlogN)</span>
-disp = ifft2(ifftshift(CP));
-
-<span class="comment">% Repeat with Noise added to images</span>
-noisy_I = I + 20*randn(300);
+<span class="comment">% Finding the FT of the Cross Power Spectrum O(NlogN)</span>
+CP_FT = real(fft2(CP));
+</pre><h2 id="3">Repeat with Noise added to images</h2><pre class="codeinput">noisy_I = I + 20*randn(300);
 
 <span class="comment">% Image J is a shifted version of I. Shift = (x_o, y_o)</span>
 noisy_J = J + 20*randn(300);
@@ -97,47 +94,29 @@ noisy_J = J + 20*randn(300);
 FT_I_noisy = fftshift(fft2(noisy_I));
 FT_J_noisy = fftshift(fft2(noisy_J));
 
-<span class="comment">% Calculating the Cross Power Spectrum O(N^2)</span>
+<span class="comment">% Calculating the Cross Power Spectrum O(N)</span>
 CP_noisy = (FT_I_noisy.*conj(FT_J_noisy))./(1e-5 + abs(FT_I_noisy).*abs(FT_J_noisy));
-CP_noisy_FT_plot = log(1+abs(fftshift(fft2(CP_noisy))));
 
-<span class="comment">% Finding the IFT of the Cross Power Spectrum O(NlogN)</span>
-disp_noisy = ifft2(ifftshift(CP_noisy));
+<span class="comment">% Finding the FT of the Cross Power Spectrum O(NlogN)</span>
+CP_noisy_FT = real(fft2(CP_noisy));
 
 <span class="comment">%Display results</span>
 figure;
 imshowpair(I,J);
 title(<span class="string">'Images I and J'</span>, <span class="string">'Fontsize'</span>, 12, <span class="string">'Fontname'</span>, <span class="string">'Cambria'</span>);
-<span class="comment">% figure;</span>
-<span class="comment">% subplot(1,2,1), imshow(I);</span>
-<span class="comment">% subplot(1,2,2), imshow(J);</span>
+
 figure;
 imshowpair(noisy_I,noisy_J);
 title(<span class="string">'Noisy Images I and J'</span>, <span class="string">'Fontsize'</span>, 12, <span class="string">'Fontname'</span>, <span class="string">'Cambria'</span>);
-<span class="comment">% figure;</span>
-<span class="comment">% subplot(1,2,1), imshow(I);</span>
-<span class="comment">% subplot(1,2,2), imshow(J);</span>
 
 figure;
-imagesc(CP_FT_plot, [min(min(CP_FT_plot)), max(max(CP_FT_plot))]); colormap(jet); colorbar;
-title(<span class="string">'Log Fourier Transform of magnitude of Cross Power Spectrum'</span>, <span class="string">'Fontsize'</span>, 12, <span class="string">'Fontname'</span>, <span class="string">'Cambria'</span>);
+imagesc(CP_FT, [min(min(CP_FT)), max(max(CP_FT))]); colormap(gray); colorbar;
+title(<span class="string">'Fourier Transform of Cross Power Spectrum'</span>, <span class="string">'Fontsize'</span>, 12, <span class="string">'Fontname'</span>, <span class="string">'Cambria'</span>);
 figure;
-imagesc(CP_noisy_FT_plot, [min(min(CP_noisy_FT_plot)), max(max(CP_noisy_FT_plot))]); colormap(jet); colorbar;
-title(<span class="string">'Log Fourier Transform of magnitude of Noisy Cross Power Spectrum'</span>, <span class="string">'Fontsize'</span>, 12, <span class="string">'Fontname'</span>, <span class="string">'Cambria'</span>);
-
-figure;
-imshow(disp,[min(min(disp)), max(max(disp))]); colormap(gray); colorbar;
-title(<span class="string">'Inverse Fourier Transform of Cross Power Spectrum'</span>, <span class="string">'Fontsize'</span>, 12, <span class="string">'Fontname'</span>, <span class="string">'Cambria'</span>);
-<span class="comment">% As we have taken the conjugate of the original image, I in the numerator</span>
-<span class="comment">% of CP, CP = exp{j2pi(ux_o + vy_o) and so the IFT of CP would be a delta centred at (-x_o, -y_o)</span>
-<span class="comment">% disp is a black image with a solitary white point at [X Y] = [31 231].</span>
-<span class="comment">% This corresponds to a shift of -31 in the x direction and -231==69 in the</span>
-<span class="comment">% y direction.</span>
-figure;
-imshow(disp_noisy,[min(min(disp_noisy)), max(max(disp_noisy))]); colormap(gray); colorbar;
-title(<span class="string">'IFT of Noisy Cross Power Spectrum'</span>, <span class="string">'Fontsize'</span>, 12, <span class="string">'Fontname'</span>, <span class="string">'Cambria'</span>);
-</pre><img vspace="5" hspace="5" src="myMainScript_01.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_02.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_03.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_04.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_05.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_06.png" alt=""> <h2 id="3">Time Complexity Analysis</h2><p>Time Complexity using FFT-based image registration: O(NlogN + N^2) = O(N^2)</p><p>Time Complexity using pixel wise comparison for image registration: O(N^4) (because every pixel of the first image has to be compared to every pixel of the second image)</p><pre class="codeinput">toc;
-</pre><pre class="codeoutput">Elapsed time is 7.158238 seconds.
+imagesc(CP_noisy_FT, [min(min(CP_noisy_FT)), max(max(CP_noisy_FT))]); colormap(gray); colorbar;
+title(<span class="string">'Fourier Transform of Noisy Cross Power Spectrum'</span>, <span class="string">'Fontsize'</span>, 12, <span class="string">'Fontname'</span>, <span class="string">'Cambria'</span>);
+</pre><img vspace="5" hspace="5" src="myMainScript_01.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_02.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_03.png" alt=""> <img vspace="5" hspace="5" src="myMainScript_04.png" alt=""> <p>CP = exp{j2pi(ux_o + vy_o) and so the FT of CP would be a delta centred at (x_o, y_o)</p><p>When there is no noise added, the FT of CP is a black image with a solitary white point at [X Y] = [271 71]. This corresponds to a x_o = 270 and y_o = 70 (the difference of 1 arising due to MATLAB's indexing from 1) This corresponds to a shift of 270(or equivalenty -30, as image is considered to be periodic when Fourier transformation is applied) in the x direction and 70 in the y direction.</p><p>When there is noise, there is alot of noise in the Fourier transform of CP and so it is hard to identify the delta (ie a single pixel). The delta at [X Y] = [271 71] is faintly visible and is still the location ofmax value in the FT, but this is no longer true when noise levels are increased.</p><h2 id="5">Time Complexity Analysis</h2><p>N = number of pixels in image Time Complexity using FFT-based image registration: O(NlogN + N) = O(NlogN)</p><p>Time Complexity using pixel wise comparison for image registration: O(N^2) (because every pixel of the first image has to be compared to every pixel of the second image)</p><pre class="codeinput">toc;
+</pre><pre class="codeoutput">Elapsed time is 4.428535 seconds.
 </pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% MyMainScript
@@ -152,18 +131,18 @@ I(50:50+69, 50:50+49) = 255;
 J = zeros(300,300);
 J( 120:120+69, 20:20+49)=255;
 
+
 % Calculating the Fourier Transforms of the images O(NlogN)
 FT_I = fftshift(fft2(I));
 FT_J = fftshift(fft2(J));
 
 % Calculating the Cross Power Spectrum O(N^2)
 CP = (FT_I.*conj(FT_J))./(1e-5 + abs(FT_I).*abs(FT_J));
-CP_FT_plot = log(1+abs(fftshift(fft2(CP))));
+% Finding the FT of the Cross Power Spectrum O(NlogN)
+CP_FT = real(fft2(CP));
 
-% Finding the IFT of the Cross Power Spectrum O(NlogN)
-disp = ifft2(ifftshift(CP));
+%% Repeat with Noise added to images
 
-% Repeat with Noise added to images
 noisy_I = I + 20*randn(300);
 
 % Image J is a shifted version of I. Shift = (x_o, y_o)
@@ -173,52 +152,48 @@ noisy_J = J + 20*randn(300);
 FT_I_noisy = fftshift(fft2(noisy_I));
 FT_J_noisy = fftshift(fft2(noisy_J));
 
-% Calculating the Cross Power Spectrum O(N^2)
+% Calculating the Cross Power Spectrum O(N)
 CP_noisy = (FT_I_noisy.*conj(FT_J_noisy))./(1e-5 + abs(FT_I_noisy).*abs(FT_J_noisy));
-CP_noisy_FT_plot = log(1+abs(fftshift(fft2(CP_noisy))));
 
-% Finding the IFT of the Cross Power Spectrum O(NlogN)
-disp_noisy = ifft2(ifftshift(CP_noisy));
+% Finding the FT of the Cross Power Spectrum O(NlogN)
+CP_noisy_FT = real(fft2(CP_noisy));
 
 %Display results
 figure;
 imshowpair(I,J);
 title('Images I and J', 'Fontsize', 12, 'Fontname', 'Cambria');
-% figure;
-% subplot(1,2,1), imshow(I);
-% subplot(1,2,2), imshow(J);
+
 figure;
 imshowpair(noisy_I,noisy_J);
 title('Noisy Images I and J', 'Fontsize', 12, 'Fontname', 'Cambria');
-% figure;
-% subplot(1,2,1), imshow(I);
-% subplot(1,2,2), imshow(J);
 
 figure;
-imagesc(CP_FT_plot, [min(min(CP_FT_plot)), max(max(CP_FT_plot))]); colormap(jet); colorbar;
-title('Log Fourier Transform of magnitude of Cross Power Spectrum', 'Fontsize', 12, 'Fontname', 'Cambria');
+imagesc(CP_FT, [min(min(CP_FT)), max(max(CP_FT))]); colormap(gray); colorbar;
+title('Fourier Transform of Cross Power Spectrum', 'Fontsize', 12, 'Fontname', 'Cambria');
 figure;
-imagesc(CP_noisy_FT_plot, [min(min(CP_noisy_FT_plot)), max(max(CP_noisy_FT_plot))]); colormap(jet); colorbar;
-title('Log Fourier Transform of magnitude of Noisy Cross Power Spectrum', 'Fontsize', 12, 'Fontname', 'Cambria');
-
-figure;
-imshow(disp,[min(min(disp)), max(max(disp))]); colormap(gray); colorbar;
-title('Inverse Fourier Transform of Cross Power Spectrum', 'Fontsize', 12, 'Fontname', 'Cambria');
-% As we have taken the conjugate of the original image, I in the numerator
-% of CP, CP = exp{j2pi(ux_o + vy_o) and so the IFT of CP would be a delta centred at (-x_o, -y_o)
-% disp is a black image with a solitary white point at [X Y] = [31 231].
-% This corresponds to a shift of -31 in the x direction and -231==69 in the
-% y direction. 
-figure;
-imshow(disp_noisy,[min(min(disp_noisy)), max(max(disp_noisy))]); colormap(gray); colorbar;
-title('IFT of Noisy Cross Power Spectrum', 'Fontsize', 12, 'Fontname', 'Cambria');
+imagesc(CP_noisy_FT, [min(min(CP_noisy_FT)), max(max(CP_noisy_FT))]); colormap(gray); colorbar;
+title('Fourier Transform of Noisy Cross Power Spectrum', 'Fontsize', 12, 'Fontname', 'Cambria');
+%%
+% CP = exp{j2pi(ux_o + vy_o) and so the FT of CP would be a delta centred at (x_o, y_o)
+%
+% When there is no noise added, the FT of CP is a black image with a solitary white point at [X Y] = [271 71].
+% This corresponds to a x_o = 270 and y_o = 70 (the difference of 1 arising due to MATLAB's indexing from 1)
+% This corresponds to a shift of 270(or equivalenty -30, as image is considered to be periodic when Fourier transformation is applied)
+% in the x direction and 70 in the y direction. 
+%
+% When there is noise, there is alot of noise in the Fourier transform of
+% CP and so it is hard to identify the delta (ie a single pixel). The delta
+% at [X Y] = [271 71] is faintly visible and is still the location ofmax
+% value in the FT, but this is no longer true when noise levels are
+% increased.
 
 %% Time Complexity Analysis
-% Time Complexity using FFT-based image registration: O(NlogN + N^2) =
-% O(N^2)
+% N = number of pixels in image
+% Time Complexity using FFT-based image registration: O(NlogN + N) =
+% O(NlogN)
 %
 % Time Complexity using pixel wise comparison for image registration:
-% O(N^4) (because every pixel of the first image has to be compared to every pixel of the second image) 
+% O(N^2) (because every pixel of the first image has to be compared to every pixel of the second image) 
 toc;
 
 ##### SOURCE END #####
